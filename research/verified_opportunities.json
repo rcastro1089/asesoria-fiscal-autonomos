@@ -1,0 +1,101 @@
+{
+  "generated": "2026-06-20",
+  "total_opportunities": 8,
+  "opportunities": [
+    {
+      "keyword": "tarifa plana autonomos 2026",
+      "search_volume": 2400,
+      "cpc": 1.16,
+      "competition": "MEDIUM (infoautonomos ranks)",
+      "content_type": "Guía completa + calculadora",
+      "priority": "HIGH",
+      "notes": "Muy buen CPC, contenido evergreen, actualizable anualmente"
+    },
+    {
+      "keyword": "gastos deducibles autonomos",
+      "search_volume": 390,
+      "cpc": 0.32,
+      "competition": "LOW (varied results)",
+      "content_type": "Lista + ejemplos prácticos",
+      "priority": "MEDIUM",
+      "notes": "Contenido infinito, siempre hay nuevos gastos"
+    },
+    {
+      "keyword": "modelo 130 autonomos",
+      "search_volume": 2400,
+      "cpc": 2.3,
+      "competition": "MEDIUM (wolterskluwer ranks)",
+      "content_type": "Guía paso a paso + ejemplos",
+      "priority": "HIGH",
+      "notes": "Alto CPC, contenido estacional con pico en abril/julio/oct/ene"
+    },
+    {
+      "keyword": "calendario fiscal autonomos 2026",
+      "search_volume": 720,
+      "cpc": 1.37,
+      "competition": "LOW",
+      "content_type": "Calendario interactivo + recordatorios",
+      "priority": "HIGH",
+      "notes": "Contenido estacional, renovable cada año"
+    },
+    {
+      "keyword": "darse de alta autonomo",
+      "search_volume": 1600,
+      "cpc": 1.56,
+      "competition": "LOW",
+      "content_type": "Tutorial paso a paso",
+      "priority": "HIGH",
+      "notes": "Query informativa clara, gente quiere aprender"
+    },
+    {
+      "keyword": "retenciones irpf autonomos",
+      "search_volume": 720,
+      "cpc": 1.0,
+      "competition": "LOW",
+      "content_type": "Calculadora + guía",
+      "priority": "MEDIUM",
+      "notes": "CPC decente, contenido técnico pero buscado"
+    },
+    {
+      "keyword": "factura electronica autonomos",
+      "search_volume": 590,
+      "cpc": 2.61,
+      "competition": "LOW",
+      "content_type": "Comparativa software + guía",
+      "priority": "HIGH",
+      "notes": "Alto CPC, tendencia creciente por obligatoriedad"
+    },
+    {
+      "keyword": "iva deducible autonomos",
+      "search_volume": 390,
+      "cpc": 0.32,
+      "competition": "LOW",
+      "content_type": "Lista + ejemplos",
+      "priority": "MEDIUM",
+      "notes": "Contenido complementario a gastos deducibles"
+    }
+  ],
+  "brand_keywords_excluded": [
+    "tu seguridad social",
+    "mi seguridad social",
+    "seguridad social.es",
+    "seguridad social app",
+    "seguridad social online",
+    "seguridad social sede",
+    "seguridad social login",
+    "seguridad social entrar",
+    "seguridad social cita previa",
+    "notificaciones seguridad social",
+    "sede electronica seguridad social",
+    "tesoreria seguridad social",
+    "numero seguridad social",
+    "www seguridad social",
+    "banco de españa",
+    "mi carpeta ciudadana",
+    "clave pin",
+    "certificado digital",
+    "tarifa de la luz",
+    "subida pensiones",
+    "calculadora online"
+  ]
+}
