@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "nombre": {
+      "type": "string"
+    },
+    "bio": {
+      "type": "string"
+    },
+    "credenciales": {
+      "type": "string"
+    },
+    "avatar": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "nombre",
+    "bio",
+    "credenciales"
+  ]
+}

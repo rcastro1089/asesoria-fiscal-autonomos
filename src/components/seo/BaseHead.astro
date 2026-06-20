@@ -1,0 +1,54 @@
+---
+import { site } from '../../data/site';
+import { resolveSeo, type SeoInput } from '../../lib/seo';
+
+interface Props extends SeoInput {}
+
+const seo = resolveSeo(Astro.props, Astro.url);
+---
+
+<!-- Charset y viewport -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Título y descripción -->
+<title>{seo.title}</title>
+<meta name="description" content={seo.description} />
+
+<!-- Canonical absoluta -->
+<link rel="canonical" href={seo.canonical} />
+
+<!-- Robots -->
+<meta
+  name="robots"
+  content={seo.noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}
+/>
+
+<!-- Idioma / hreflang (sitio mono-idioma es-ES) -->
+<meta http-equiv="content-language" content={site.locale} />
+<link rel="alternate" hreflang="es-ES" href={seo.canonical} />
+<link rel="alternate" hreflang="x-default" href={seo.canonical} />
+
+<!-- Open Graph -->
+<meta property="og:type" content={seo.ogType} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="es_ES" />
+<meta property="og:title" content={seo.title} />
+<meta property="og:description" content={seo.description} />
+<meta property="og:url" content={seo.canonical} />
+<meta property="og:image" content={seo.ogImage} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={site.social.twitter} />
+<meta name="twitter:title" content={seo.title} />
+<meta name="twitter:description" content={seo.description} />
+<meta name="twitter:image" content={seo.ogImage} />
+
+<!-- Tema e iconos -->
+<meta name="theme-color" content={site.themeColor} />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<!-- Sitemap -->
+<link rel="sitemap" href="/sitemap-index.xml" />

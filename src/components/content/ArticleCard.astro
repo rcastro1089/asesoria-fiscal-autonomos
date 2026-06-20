@@ -1,0 +1,39 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  categoria?: string;
+  pubDate: Date;
+  readingLabel?: string;
+}
+
+const { href, title, description, categoria, pubDate, readingLabel } = Astro.props;
+const fmt = new Intl.DateTimeFormat('es-ES', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+}).format(pubDate);
+---
+
+<article
+  class="group flex flex-col h-full rounded-xl border border-line bg-white p-5 transition-shadow hover:shadow-md"
+>
+  {
+    categoria && (
+      <span class="text-xs font-semibold uppercase tracking-wide text-brand mb-2">
+        {categoria}
+      </span>
+    )
+  }
+  <h3 class="text-lg font-bold leading-snug text-ink">
+    <a href={href} class="after:absolute group-hover:text-brand transition-colors">
+      {title}
+    </a>
+  </h3>
+  <p class="mt-2 text-sm text-muted line-clamp-3 flex-1">{description}</p>
+  <div class="mt-4 flex items-center gap-2 text-xs text-muted">
+    <time>{fmt}</time>
+    {readingLabel && <><span aria-hidden="true">·</span><span>{readingLabel}</span></>}
+  </div>
+</article>

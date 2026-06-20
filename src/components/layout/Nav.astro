@@ -1,0 +1,72 @@
+---
+import { categorias, herramientas } from '../../data/nav';
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) =>
+  href === '/' ? pathname === '/' : pathname.startsWith(href);
+---
+
+<nav aria-label="Navegación principal" class="w-full">
+  <!-- Desktop -->
+  <ul class="hidden lg:flex flex-wrap items-center gap-x-5 gap-y-1 text-sm font-medium">
+    {
+      [...categorias, ...herramientas].map((item) => (
+        <li>
+          <a
+            href={item.href}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+            class:list={[
+              'transition-colors hover:text-brand',
+              isActive(item.href) ? 'text-brand' : 'text-muted',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <!-- Mobile: drawer accesible con <details> (cero JS) -->
+  <details class="lg:hidden group">
+    <summary
+      class="list-none cursor-pointer p-2 -mr-2 rounded-md text-ink"
+      aria-label="Abrir menú"
+    >
+      <svg
+        class="w-6 h-6"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+    </summary>
+    <div
+      class="absolute left-0 right-0 top-full bg-white border-b border-line shadow-lg"
+    >
+      <ul class="flex flex-col p-4 gap-1">
+        {
+          [...categorias, ...herramientas].map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[
+                  'block px-3 py-2 rounded-md hover:bg-surface',
+                  isActive(item.href) ? 'text-brand font-semibold' : 'text-ink',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </details>
+</nav>

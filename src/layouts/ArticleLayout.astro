@@ -1,0 +1,116 @@
+---
+import type { MarkdownHeading } from 'astro';
+import { getEntry, type CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/layout/Breadcrumbs.astro';
+import ArticleMeta from '../components/content/ArticleMeta.astro';
+import TableOfContents from '../components/content/TableOfContents.astro';
+import RelatedArticles from '../components/content/RelatedArticles.astro';
+import FAQ from '../components/content/FAQ.astro';
+import SchemaArticle from '../components/seo/SchemaArticle.astro';
+import SchemaFAQ from '../components/seo/SchemaFAQ.astro';
+import SchemaHowTo from '../components/seo/SchemaHowTo.astro';
+import { readingTimeLabel } from '../lib/reading-time';
+import { absoluteUrl } from '../lib/seo';
+import { site } from '../data/site';
+
+interface Props {
+  articulo: CollectionEntry<'articulos'>;
+  headings: MarkdownHeading[];
+  /** Texto plano del cuerpo para calcular el tiempo de lectura. */
+  rawContent: string;
+}
+
+const { articulo, headings, rawContent } = Astro.props;
+const { data } = articulo;
+
+const categoria = await getEntry(data.categoria);
+const autor = await getEntry(data.autor);
+
+const articleUrl = absoluteUrl(`/articulos/${articulo.id}`);
+const categoriaHref = `/categoria/${data.categoria.id}`;
+const readingLabel = readingTimeLabel(rawContent);
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  ogType="article"
+  ogImage={data.heroImage ? undefined : undefined}
+>
+  {/* JSON-LD */}
+  <SchemaArticle
+    slot="head"
+    headline={data.title}
+    description={data.description}
+    url={articleUrl}
+    datePublished={data.pubDate}
+    dateModified={data.updatedDate}
+    authorName={autor?.data.nombre ?? site.name}
+    authorUrl={autor?.data.url}
+  />
+  {data.faq && <SchemaFAQ slot="head" faq={data.faq} />}
+  {data.howto && <SchemaHowTo slot="head" name={data.title} howto={data.howto} />}
+
+  <div class="mx-auto max-w-6xl px-4 py-8">
+    <Breadcrumbs
+      items={[
+        { name: categoria?.data.nombre ?? 'Categoría', url: categoriaHref },
+        { name: data.title, url: `/articulos/${articulo.id}` },
+      ]}
+    />
+
+    <div class="mt-6 grid gap-10 lg:grid-cols-[1fr_16rem]">
+      <article class="min-w-0">
+        <header class="mb-8">
+          {
+            categoria && (
+              <a
+                href={categoriaHref}
+                class="text-xs font-semibold uppercase tracking-wide text-brand"
+              >
+                {categoria.data.nombre}
+              </a>
+            )
+          }
+          <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold leading-tight text-ink">
+            {data.title}
+          </h1>
+          <p class="mt-3 text-lg text-muted">{data.description}</p>
+          <div class="mt-4">
+            <ArticleMeta
+              autorNombre={autor?.data.nombre ?? site.name}
+              autorCredenciales={autor?.data.credenciales}
+              autorUrl={autor?.data.url}
+              pubDate={data.pubDate}
+              updatedDate={data.updatedDate}
+              readingLabel={readingLabel}
+            />
+          </div>
+        </header>
+
+        {/* Slot de anuncio (tras intro) — reservado para Fase 5 */}
+        <slot name="ad-top" />
+
+        <div class="prose prose-slate max-w-none prose-headings:scroll-mt-24 prose-a:text-brand">
+          <slot />
+        </div>
+
+        {/* Slot de anuncio (final) — reservado para Fase 5 */}
+        <slot name="ad-bottom" />
+
+        {data.faq && <FAQ faq={data.faq} />}
+
+        <RelatedArticles current={articulo} />
+      </article>
+
+      <aside class="hidden lg:block">
+        <div class="sticky top-24 space-y-8">
+          <TableOfContents headings={headings} />
+          {/* Slot de anuncio lateral — reservado para Fase 5 */}
+          <slot name="ad-sidebar" />
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

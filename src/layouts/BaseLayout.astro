@@ -1,0 +1,41 @@
+---
+import '../styles/global.css';
+import BaseHead from '../components/seo/BaseHead.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import type { SeoInput } from '../lib/seo';
+
+interface Props extends SeoInput {}
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <BaseHead {...Astro.props} />
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen flex flex-col bg-white text-ink antialiased">
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-brand focus:px-4 focus:py-2 focus:text-white"
+    >
+      Saltar al contenido
+    </a>
+
+    <Header />
+
+    <main id="contenido" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+
+    {
+      /*
+       * AdSense: el script se carga de forma async y SOLO tras el consentimiento
+       * del CMP (Fase 5). Aquí queda el punto de inserción documentado; sin
+       * consentimiento no se inyecta ningún script de terceros.
+       */
+    }
+  </body>
+</html>

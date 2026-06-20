@@ -1,0 +1,50 @@
+---
+interface Props {
+  autorNombre: string;
+  autorCredenciales?: string;
+  autorUrl?: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  readingLabel: string;
+}
+
+const { autorNombre, autorCredenciales, autorUrl, pubDate, updatedDate, readingLabel } =
+  Astro.props;
+
+const fmt = (d: Date) =>
+  new Intl.DateTimeFormat('es-ES', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(d);
+---
+
+<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
+  <span>
+    Por{' '}
+    {
+      autorUrl ? (
+        <a href={autorUrl} rel="author" class="font-medium text-ink hover:text-brand">
+          {autorNombre}
+        </a>
+      ) : (
+        <span class="font-medium text-ink">{autorNombre}</span>
+      )
+    }
+    {autorCredenciales && <span class="text-muted"> · {autorCredenciales}</span>}
+  </span>
+  <span aria-hidden="true">·</span>
+  <time datetime={pubDate.toISOString()}>{fmt(pubDate)}</time>
+  {
+    updatedDate && (
+      <>
+        <span aria-hidden="true">·</span>
+        <span>
+          Actualizado <time datetime={updatedDate.toISOString()}>{fmt(updatedDate)}</time>
+        </span>
+      </>
+    )
+  }
+  <span aria-hidden="true">·</span>
+  <span>{readingLabel}</span>
+</div>

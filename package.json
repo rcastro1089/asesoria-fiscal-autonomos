@@ -1,0 +1,26 @@
+{
+  "name": "asesoria-fiscal-es",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Sitio AdSense de fiscalidad práctica para autónomos digitales en España",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^6.0.3",
+    "@astrojs/preact": "^5.1.5",
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.1",
+    "astro": "^6.4.8",
+    "preact": "^10.29.2",
+    "tailwindcss": "^4.3.1"
+  },
+  "overrides": {
+    "vite": "^7.3.5"
+  }
+}

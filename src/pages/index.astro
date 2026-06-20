@@ -1,0 +1,118 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/content/ArticleCard.astro';
+import { readingTimeLabel } from '../lib/reading-time';
+import { site } from '../data/site';
+import { herramientas } from '../data/nav';
+
+// Categorías ordenadas.
+const categorias = (await getCollection('categorias')).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
+
+// Últimos artículos publicados (con nombre de categoría resuelto).
+const articulos = (await getCollection('articulos', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+
+const ultimos = await Promise.all(
+  articulos.slice(0, 6).map(async (a) => {
+    const cat = await getEntry(a.data.categoria);
+    return {
+      href: `/articulos/${a.id}`,
+      title: a.data.title,
+      description: a.data.description,
+      categoria: cat?.data.nombre,
+      pubDate: a.data.pubDate,
+      readingLabel: readingTimeLabel(a.body ?? ''),
+    };
+  }),
+);
+---
+
+<BaseLayout>
+  <!-- Hero -->
+  <section class="bg-surface border-b border-line">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:py-20 text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-ink">
+        Fiscalidad práctica para autónomos
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-muted">
+        {site.description}
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a
+          href="/calculadoras"
+          class="rounded-lg bg-brand px-5 py-3 font-semibold text-white hover:bg-brand-dark transition-colors"
+        >
+          Calculadoras fiscales
+        </a>
+        <a
+          href="/calendario-fiscal"
+          class="rounded-lg border border-line bg-white px-5 py-3 font-semibold text-ink hover:border-brand transition-colors"
+        >
+          Calendario fiscal 2026
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categorías -->
+  <section class="mx-auto max-w-6xl px-4 py-14">
+    <h2 class="text-2xl font-bold text-ink mb-6">Explora por categoría</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        categorias.map((cat) => (
+          <a
+            href={`/categoria/${cat.id}`}
+            class="rounded-xl border border-line bg-white p-5 transition-shadow hover:shadow-md"
+          >
+            <h3 class="font-bold text-ink">{cat.data.nombre}</h3>
+            <p class="mt-1 text-sm text-muted line-clamp-2">{cat.data.descripcion}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Últimos artículos -->
+  {
+    ultimos.length > 0 && (
+      <section class="mx-auto max-w-6xl px-4 pb-14">
+        <h2 class="text-2xl font-bold text-ink mb-6">Últimos artículos</h2>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {ultimos.map((a) => (
+            <ArticleCard
+              href={a.href}
+              title={a.title}
+              description={a.description}
+              categoria={a.categoria}
+              pubDate={a.pubDate}
+              readingLabel={a.readingLabel}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- CTA herramientas -->
+  <section class="mx-auto max-w-6xl px-4 pb-16">
+    <div class="rounded-2xl bg-brand px-6 py-10 text-center text-white">
+      <h2 class="text-2xl font-bold">Herramientas para tu día a día fiscal</h2>
+      <div class="mt-6 flex flex-wrap justify-center gap-3">
+        {
+          herramientas.map((h) => (
+            <a
+              href={h.href}
+              class="rounded-lg bg-white/10 px-5 py-2.5 font-medium ring-1 ring-white/30 hover:bg-white/20 transition-colors"
+            >
+              {h.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+type Variant = 'tip' | 'aviso' | 'plazo';
+
+interface Props {
+  variant?: Variant;
+  title?: string;
+}
+
+const { variant = 'tip', title } = Astro.props;
+
+const styles: Record<Variant, { box: string; icon: string; label: string }> = {
+  tip: {
+    box: 'border-accent/30 bg-accent/5',
+    icon: '💡',
+    label: 'Consejo',
+  },
+  aviso: {
+    box: 'border-amber-300 bg-amber-50',
+    icon: '⚠️',
+    label: 'Aviso',
+  },
+  plazo: {
+    box: 'border-brand/30 bg-brand/5',
+    icon: '📅',
+    label: 'Plazo',
+  },
+};
+
+const s = styles[variant];
+---
+
+<aside class:list={['my-6 rounded-xl border p-4 flex gap-3', s.box]}>
+  <span aria-hidden="true" class="text-xl leading-none">{s.icon}</span>
+  <div class="text-sm leading-relaxed">
+    <p class="font-semibold text-ink mb-1">{title ?? s.label}</p>
+    <div class="text-muted [&>p]:m-0">
+      <slot />
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,4 @@
+# Redirecciones 301 de Cloudflare Pages.
+# Formato: <origen> <destino> <código>
+# Ejemplo (descomenta y ajusta cuando se necesite):
+# /blog/*  /articulos/:splat  301

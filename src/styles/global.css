@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* ---------------------------------------------------------------------------
+   Tokens de marca — Tailwind CSS 4 (config CSS-first, sin tailwind.config.ts)
+   --------------------------------------------------------------------------- */
+@theme {
+  /* Marca: azul fiscal sobrio que transmite confianza/finanzas. */
+  --color-brand: #1d4ed8;
+  --color-brand-dark: #1e40af;
+  --color-brand-light: #3b82f6;
+
+  /* Acento: verde "ahorro/ok" para CTAs y estados positivos. */
+  --color-accent: #059669;
+  --color-accent-dark: #047857;
+
+  /* Neutros de superficie. */
+  --color-ink: #0f172a;
+  --color-muted: #475569;
+  --color-surface: #f8fafc;
+  --color-line: #e2e8f0;
+
+  /* Tipografía. */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Render base. */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background-color: #ffffff;
+}
+
+/* Foco visible accesible para navegación por teclado. */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Compensa el header sticky al saltar a anclas (#headings). */
+:target {
+  scroll-margin-top: 6rem;
+}

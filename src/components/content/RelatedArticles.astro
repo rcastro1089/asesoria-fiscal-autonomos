@@ -1,0 +1,49 @@
+---
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import { getRelatedArticles } from '../../lib/related';
+import ArticleCard from './ArticleCard.astro';
+
+interface Props {
+  current: CollectionEntry<'articulos'>;
+}
+
+const { current } = Astro.props;
+
+const all = await getCollection('articulos', ({ data }) => !data.draft);
+const related = getRelatedArticles(current, all);
+
+// Resolver nombre de categoría para cada relacionado.
+const cards = await Promise.all(
+  related.map(async (a) => {
+    const cat = await getEntry(a.data.categoria);
+    return {
+      href: `/articulos/${a.id}`,
+      title: a.data.title,
+      description: a.data.description,
+      categoria: cat?.data.nombre,
+      pubDate: a.data.pubDate,
+    };
+  }),
+);
+---
+
+{
+  cards.length > 0 && (
+    <section aria-labelledby="relacionados" class="mt-12">
+      <h2 id="relacionados" class="text-xl font-bold text-ink mb-5">
+        Artículos relacionados
+      </h2>
+      <div class="grid gap-5 sm:grid-cols-2">
+        {cards.map((c) => (
+          <ArticleCard
+            href={c.href}
+            title={c.title}
+            description={c.description}
+            categoria={c.categoria}
+            pubDate={c.pubDate}
+          />
+        ))}
+      </div>
+    </section>
+  )
+}

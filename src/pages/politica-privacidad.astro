@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/layout/Breadcrumbs.astro';
+import { site } from '../data/site';
+
+const title = 'Política de Privacidad';
+const description =
+  'Política de privacidad de Asesoría Fiscal Autónomos: datos que recogemos, finalidad, base legal, derechos RGPD y uso de Google AdSense y cookies de terceros.';
+const updated = '21 de junio de 2026';
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="mx-auto max-w-3xl px-4 py-8">
+    <Breadcrumbs items={[{ name: title, url: '/politica-privacidad' }]} />
+
+    <header class="mt-6 mb-8">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink">{title}</h1>
+      <p class="mt-3 text-sm text-muted">Última actualización: {updated}</p>
+    </header>
+
+    <div class="prose prose-slate max-w-none">
+      <p>
+        En <strong>{site.name}</strong> (en adelante, «el Sitio») nos tomamos en
+        serio la privacidad de los usuarios. Esta política explica qué datos
+        personales tratamos, con qué finalidad y base legal, durante cuánto
+        tiempo y qué derechos te asisten conforme al Reglamento (UE) 2016/679
+        (<strong>RGPD</strong>) y la Ley Orgánica 3/2018 (LOPDGDD).
+      </p>
+
+      <h2>1. Responsable del tratamiento</h2>
+      <p>
+        El responsable del tratamiento de los datos es el titular del Sitio,
+        cuyos datos identificativos figuran en el
+        <a href="/aviso-legal">Aviso Legal</a>. Puedes contactar con nosotros en
+        cualquier momento a través de la <a href="/contacto">página de contacto</a>.
+      </p>
+
+      <h2>2. Datos que recogemos y finalidad</h2>
+      <ul>
+        <li>
+          <strong>Datos de contacto:</strong> cuando utilizas el formulario de
+          contacto recogemos tu nombre, correo electrónico y el contenido de tu
+          mensaje, con la finalidad exclusiva de atender tu consulta.
+        </li>
+        <li>
+          <strong>Datos de navegación:</strong> de forma automática se recogen
+          datos técnicos (dirección IP, tipo de navegador, páginas visitadas) a
+          través de cookies y tecnologías similares, con fines de medición,
+          mejora del Sitio y publicidad personalizada.
+        </li>
+      </ul>
+
+      <h2>3. Base legal del tratamiento</h2>
+      <ul>
+        <li>
+          <strong>Consentimiento</strong> (art. 6.1.a RGPD): para las cookies
+          analíticas y publicitarias y para el envío del formulario de contacto.
+        </li>
+        <li>
+          <strong>Interés legítimo</strong> (art. 6.1.f RGPD): para garantizar la
+          seguridad y el correcto funcionamiento técnico del Sitio.
+        </li>
+      </ul>
+
+      <h2>4. Publicidad de Google AdSense y cookies de terceros</h2>
+      <p>
+        Este Sitio utiliza <strong>Google AdSense</strong>, un servicio de
+        publicidad proporcionado por Google Ireland Limited. Google y sus
+        proveedores (terceros vendedores) utilizan <strong>cookies de terceros</strong>
+        para publicar anuncios basados en tus visitas previas a este y otros
+        sitios web, es decir, <strong>publicidad personalizada</strong>.
+      </p>
+      <ul>
+        <li>
+          Google emplea la cookie <code>DoubleClick / __gads</code> y tecnologías
+          similares para mostrar y medir anuncios.
+        </li>
+        <li>
+          Los anuncios <strong>solo se cargan tras tu consentimiento</strong>
+          expreso a través de nuestro banner de cookies. Si no aceptas, no se
+          ejecuta el script de AdSense ni se instalan cookies publicitarias.
+        </li>
+        <li>
+          Puedes inhabilitar la personalización de anuncios de Google desde
+          <a
+            href="https://www.google.com/settings/ads"
+            rel="noopener nofollow"
+            target="_blank">la configuración de anuncios de Google</a
+          > y obtener más información en la
+          <a
+            href="https://policies.google.com/technologies/partner-sites"
+            rel="noopener nofollow"
+            target="_blank">política de privacidad de Google para sitios asociados</a
+          >.
+        </li>
+      </ul>
+      <p>
+        Para más detalle sobre las cookies utilizadas y cómo gestionarlas,
+        consulta nuestra <a href="/politica-cookies">Política de Cookies</a>.
+      </p>
+
+      <h2>5. Plazo de conservación</h2>
+      <p>
+        Los datos del formulario de contacto se conservan el tiempo necesario
+        para atender tu solicitud y, posteriormente, durante el plazo legal
+        exigible. Los datos de cookies se conservan según los plazos indicados
+        en la Política de Cookies.
+      </p>
+
+      <h2>6. Destinatarios y transferencias internacionales</h2>
+      <p>
+        No cedemos tus datos a terceros salvo obligación legal. Los proveedores
+        tecnológicos que utilizamos (Google AdSense, alojamiento en Cloudflare)
+        pueden tratar datos fuera del Espacio Económico Europeo bajo las
+        garantías adecuadas previstas en el RGPD (cláusulas contractuales tipo).
+      </p>
+
+      <h2>7. Tus derechos (RGPD)</h2>
+      <p>Puedes ejercer en cualquier momento los siguientes derechos:</p>
+      <ul>
+        <li><strong>Acceso</strong> a tus datos personales.</li>
+        <li><strong>Rectificación</strong> de datos inexactos.</li>
+        <li><strong>Supresión</strong> («derecho al olvido»).</li>
+        <li><strong>Oposición</strong> al tratamiento.</li>
+        <li><strong>Limitación</strong> del tratamiento.</li>
+        <li><strong>Portabilidad</strong> de los datos.</li>
+        <li><strong>Retirar el consentimiento</strong> en cualquier momento.</li>
+      </ul>
+      <p>
+        Para ejercerlos, escríbenos a través de la
+        <a href="/contacto">página de contacto</a>. También tienes derecho a
+        reclamar ante la <strong>Agencia Española de Protección de Datos</strong>
+        (<a href="https://www.aepd.es" rel="noopener nofollow" target="_blank">aepd.es</a>)
+        si consideras que el tratamiento no se ajusta a la normativa.
+      </p>
+
+      <h2>8. Cambios en esta política</h2>
+      <p>
+        Podemos actualizar esta política para adaptarla a cambios normativos o de
+        funcionamiento del Sitio. La fecha de la última actualización figura al
+        inicio de esta página.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

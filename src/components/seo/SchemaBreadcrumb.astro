@@ -1,0 +1,12 @@
+---
+import { breadcrumbSchema, type BreadcrumbItem } from '../../lib/schema';
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+const json = items?.length ? breadcrumbSchema(items) : null;
+---
+
+{json && <script type="application/ld+json" set:html={JSON.stringify(json)} />}

@@ -1,0 +1,20 @@
+---
+import { site } from '../../data/site';
+import Nav from './Nav.astro';
+---
+
+<header
+  class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-line"
+>
+  <div
+    class="relative mx-auto max-w-6xl px-4 h-16 flex items-center justify-between gap-4"
+  >
+    <a href="/" class="flex items-center gap-2 shrink-0" aria-label="Inicio">
+      <img src="/favicon.svg" alt="" width="28" height="28" class="rounded" />
+      <span class="font-bold text-ink leading-tight">
+        {site.shortName}
+      </span>
+    </a>
+    <Nav />
+  </div>
+</header>

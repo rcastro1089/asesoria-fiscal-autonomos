@@ -1,0 +1,9 @@
+---
+import { articleSchema, type ArticleSchemaInput } from '../../lib/schema';
+
+interface Props extends ArticleSchemaInput {}
+
+const json = articleSchema(Astro.props);
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(json)} />

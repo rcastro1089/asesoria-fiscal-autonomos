@@ -1,0 +1,13 @@
+---
+import { howToSchema } from '../../lib/schema';
+
+interface Props {
+  name: string;
+  howto: { paso: string; detalle: string }[];
+}
+
+const { name, howto } = Astro.props;
+const json = howto?.length ? howToSchema(name, howto) : null;
+---
+
+{json && <script type="application/ld+json" set:html={JSON.stringify(json)} />}

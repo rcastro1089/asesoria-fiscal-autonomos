@@ -1,0 +1,38 @@
+---
+import SchemaBreadcrumb from '../seo/SchemaBreadcrumb.astro';
+import type { BreadcrumbItem } from '../../lib/schema';
+
+interface Props {
+  /** Jerarquía sin "Inicio": se antepone automáticamente. */
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+const crumbs: BreadcrumbItem[] = [{ name: 'Inicio', url: '/' }, ...items];
+---
+
+<nav aria-label="Migas de pan" class="text-sm">
+  <ol class="flex flex-wrap items-center gap-1 text-muted">
+    {
+      crumbs.map((crumb, index) => {
+        const isLast = index === crumbs.length - 1;
+        return (
+          <li class="flex items-center gap-1">
+            {index > 0 && <span aria-hidden="true" class="text-line">›</span>}
+            {isLast ? (
+              <span class="text-ink font-medium" aria-current="page">
+                {crumb.name}
+              </span>
+            ) : (
+              <a href={crumb.url} class="hover:text-brand transition-colors">
+                {crumb.name}
+              </a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>
+
+<SchemaBreadcrumb items={crumbs} />

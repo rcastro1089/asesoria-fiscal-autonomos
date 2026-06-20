@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import CategoryLayout from '../../layouts/CategoryLayout.astro';
+import ArticleCard from '../../components/content/ArticleCard.astro';
+import { readingTimeLabel } from '../../lib/reading-time';
+
+export async function getStaticPaths() {
+  const categorias = await getCollection('categorias');
+  return categorias.map((categoria) => ({
+    params: { categoria: categoria.id },
+    props: { categoria },
+  }));
+}
+
+const { categoria } = Astro.props;
+
+// Artículos publicados de esta categoría, ordenados por fecha descendente.
+const articulos = (
+  await getCollection(
+    'articulos',
+    ({ data }) => !data.draft && data.categoria.id === categoria.id,
+  )
+).sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+
+<CategoryLayout categoria={categoria}>
+  {
+    articulos.length > 0 ? (
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {articulos.map((a) => (
+          <ArticleCard
+            href={`/articulos/${a.id}`}
+            title={a.data.title}
+            description={a.data.description}
+            pubDate={a.data.pubDate}
+            readingLabel={readingTimeLabel(a.body ?? '')}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-muted">Próximamente publicaremos artículos en esta categoría.</p>
+    )
+  }
+</CategoryLayout>
