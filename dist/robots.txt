@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-
-# Evitar indexar combinaciones de parámetros de calculadoras (contenido duplicado).
-Disallow: /calculadoras/*?
-
-Sitemap: https://asesoria-fiscal-autonomos.es/sitemap-index.xml
