@@ -1,0 +1,175 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import CalculadoraIVA from '../../components/interactive/CalculadoraIVA';
+import type { BreadcrumbItem } from '../../lib/schema';
+
+const title = 'Calculadora IVA para autónomos 2026';
+const description = 'Calcula el IVA a liquidar o desde una base imponible. Soportado, repercutido y resultados instantáneos.';
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Calculadoras', url: '/calculadoras' },
+  { name: 'IVA', url: '/calculadoras/iva' },
+];
+---
+
+<ToolLayout title={title} description={description} breadcrumbs={breadcrumbs}>
+  <slot name="tool">
+    <CalculadoraIVA client:visible />
+  </slot>
+
+  <section>
+    <h2>¿Qué es el IVA y cómo funciona para autónomos?</h2>
+    <p>
+      El Impuesto sobre el Valor Añadido (IVA) es un impuesto indirecto sobre el consumo que grava cada
+      transacción económica. Como autónomo, tienes la obligación de actuar como <strong>recaudador</strong>
+      del IVA para el Estado. Esto significa que debes:
+    </p>
+    <ul>
+      <li>Cobrar IVA a tus clientes (IVA repercutido)</li>
+      <li>Pagar IVA a tus proveedores (IVA soportado)</li>
+      <li>Liquidar la diferencia al Estado cada trimestre</li>
+    </ul>
+
+    <h3>Tipos de IVA en España 2026</h3>
+    <p>
+      El IVA tiene diferentes tasas según el tipo de producto o servicio:
+    </p>
+    <ul>
+      <li><strong>Tipo normal: 21%</strong> - Aplicable a la mayoría de bienes y servicios</li>
+      <li>
+        <strong>Tipo reducido: 10%</strong> - Alimentos, libros, transportes, restauración en determinadas
+        circunstancias
+      </li>
+      <li>
+        <strong>Tipo superreducido: 4%</strong> - Alimentos básicos, medicamentos, libros, prensa
+      </li>
+    </ul>
+
+    <h3>¿IVA repercutido o soportado?</h3>
+    <p>
+      <strong>IVA repercutido:</strong> Es el IVA que tú cobras a tus clientes cuando les vendes un producto
+      o les prestas un servicio. Si facturas 1.000 € y aplicas un 21% de IVA, el cliente te paga 1.210 €
+      (1.000 + 210 de IVA). Ese IVA de 210 € lo debes ingresar posteriormente en Hacienda.
+    </p>
+    <p>
+      <strong>IVA soportado:</strong> Es el IVA que tú pagas cuando compras productos o contratas servicios
+      de tus proveedores. Por ejemplo, si compras material de oficina por 100 € con un 21% de IVA, pagas 121 €.
+      Ese IVA de 21 € lo puedes deducir de lo que debes pagar a Hacienda.
+    </p>
+
+    <h3>Cálculo de la liquidación trimestral</h3>
+    <p>
+      Cada trimestre (en marzo, junio, septiembre y diciembre) debes liquidar tu IVA ante Hacienda. El cálculo
+      es simple:
+    </p>
+    <p>
+      <strong>IVA a pagar = IVA repercutido - IVA soportado deducible</strong>
+    </p>
+    <p>
+      Si el resultado es positivo, debes pagar esa cantidad al Estado. Si es negativo, significa que has pagado
+      más IVA del que has cobrado, y tienes derecho a que Hacienda te lo devuelva o lo compense en trimestres
+      posteriores.
+    </p>
+
+    <h3>Ejemplo de liquidación IVA trimestral</h3>
+    <p>
+      Imaginemos que durante un trimestre:
+    </p>
+    <ul>
+      <li>Facturaste 30.000 € (aplicando 21% de IVA) → IVA repercutido = 6.300 €</li>
+      <li>Gastaste 10.000 € en proveedores (con 21% de IVA) → IVA soportado = 2.100 €</li>
+      <li>Gastos en transportes 500 € (21% IVA) → IVA soportado = 105 €</li>
+    </ul>
+    <p>
+      <strong>Cálculo:</strong>
+    </p>
+    <ul>
+      <li>IVA repercutido: 6.300 €</li>
+      <li>IVA soportado: 2.100 + 105 = 2.205 €</li>
+      <li><strong>IVA a pagar: 6.300 - 2.205 = 4.095 €</strong></li>
+    </ul>
+
+    <h3>Obligaciones con el IVA como autónomo</h3>
+    <p>
+      <strong>Régimen de IVA:</strong> En función de tu volumen de negocio y tipo de actividad, puedes estar
+      en:
+    </p>
+    <ul>
+      <li>
+        <strong>Régimen ordinario:</strong> Debes liquidar el IVA trimestralmente (si facturación > 600.000 €/año)
+        o anualmente si estás exento de VAT
+      </li>
+      <li>
+        <strong>Régimen simplificado:</strong> Si tus ingresos anuales no superan los 600.000 €, puedes optar
+        por liquidar anualmente
+      </li>
+      <li>
+        <strong>Pequeño empresario o exento:</strong> Si tus ingresos son muy bajos, puedes estar exento de
+        cobrar IVA
+      </li>
+    </ul>
+
+    <h3>Documentación necesaria para deducir IVA soportado</h3>
+    <p>
+      Para poder deducir el IVA que has pagado a tus proveedores, necesitas documentación que acredite:
+    </p>
+    <ul>
+      <li><strong>Facturas o justificantes:</strong> Que especifiquen claramente el IVA desglosado</li>
+      <li><strong>Destino profesional:</strong> Que los gastos estén relacionados con tu actividad como autónomo</li>
+      <li><strong>Identificación del proveedor:</strong> Con su nombre, CIF/NIF y dirección</li>
+      <li><strong>Importe y tipo de IVA:</strong> Desglosado de forma clara</li>
+    </ul>
+
+    <h3>Gastos que puedes deducir IVA</h3>
+    <p>
+      Puedes deducir el IVA soportado en gastos como:
+    </p>
+    <ul>
+      <li>Compra de material y suministros profesionales</li>
+      <li>Alquiler de oficina o local</li>
+      <li>Servicios de telefonía e internet</li>
+      <li>Suministros de agua, electricidad, gas</li>
+      <li>Software y aplicaciones de negocio</li>
+      <li>Equipo informático y mobiliario (dentro de límites)</li>
+      <li>Servicios de asesoramiento y gestoría</li>
+      <li>Publicidad y marketing</li>
+      <li>Transportes y desplazamientos profesionales</li>
+    </ul>
+
+    <h3>Errores comunes con el IVA</h3>
+    <p>
+      <strong>No documentar correctamente:</strong> Conserva todas las facturas de compras. Sin documentación,
+      no puedes deducir el IVA.
+    </p>
+    <p>
+      <strong>Mezclar gastos personales y profesionales:</strong> Solo puedes deducir IVA de gastos que sean
+      estrictamente profesionales.
+    </p>
+    <p>
+      <strong>No registrar todas tus operaciones:</strong> Cada venta y cada compra debe estar registrada en
+      tu contabilidad.
+    </p>
+    <p>
+      <strong>Incumplimiento de plazos:</strong> Las liquidaciones trimestrales tienen fechas límite. Incumplirlas
+      puede resultar en sanciones.
+    </p>
+
+    <h3>Herramientas para gestionar el IVA</h3>
+    <p>
+      Para facilitar tu gestión del IVA, es recomendable:
+    </p>
+    <ul>
+      <li>Utilizar un programa de facturación que desglose el IVA automáticamente</li>
+      <li>Mantener un registro organizado de facturas de compras y ventas</li>
+      <li>Contar con asesoramiento profesional (gestoría)</li>
+      <li>Conocer los plazos de liquidación y presentación de declaraciones</li>
+    </ul>
+
+    <h3>IVA en servicios digitales y electrónicos</h3>
+    <p>
+      Si ofreces servicios digitales a clientes en otros países de la UE, existen reglas especiales de IVA
+      (reglamentación MOSS - Mini One Stop Shop). Si tienes clientes internacionales, consulta con tu asesor
+      sobre cómo se aplica el IVA en estas situaciones.
+    </p>
+  </section>
+</ToolLayout>

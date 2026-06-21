@@ -1,0 +1,188 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import CalculadoraRetenciones from '../../components/interactive/CalculadoraRetenciones';
+import type { BreadcrumbItem } from '../../lib/schema';
+
+const title = 'Calculadora Retenciones IRPF para autónomos 2026';
+const description = 'Calcula la retención de IRPF en tus facturas. Incluye IVA y muestra el total a cobrar realmente.';
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Calculadoras', url: '/calculadoras' },
+  { name: 'Retenciones', url: '/calculadoras/retenciones' },
+];
+---
+
+<ToolLayout title={title} description={description} breadcrumbs={breadcrumbs}>
+  <slot name="tool">
+    <CalculadoraRetenciones client:visible />
+  </slot>
+
+  <section>
+    <h2>¿Qué son las retenciones de IRPF en facturas?</h2>
+    <p>
+      Las retenciones de IRPF son descuentos que algunos de tus clientes practican sobre el importe de tus
+      facturas. Es decir, en lugar de pagarte el 100% de lo que facturaste, retienen un porcentaje (que
+      varía entre el 7% y el 15% generalmente) y lo ingresan directamente en la Agencia Tributaria.
+    </p>
+
+    <h3>¿Quién practica retenciones?</h3>
+    <p>
+      Las retenciones las practican principalmente:
+    </p>
+    <ul>
+      <li><strong>Administraciones públicas:</strong> Ministerios, consejerías, ayuntamientos, universidades</li>
+      <li>
+        <strong>Grandes empresas:</strong> En la mayoría de casos, aquellas con volumen de facturación elevado
+      </li>
+      <li>
+        <strong>Determinados sectores:</strong> Principalmente en servicios profesionales (consultoría,
+        asesoramiento, reparaciones)
+      </li>
+    </ul>
+
+    <h3>Tipos de retención aplicables</h3>
+    <p>
+      Los tipos de retención varían según tu condición como autónomo:
+    </p>
+    <ul>
+      <li>
+        <strong>Retención del 15%:</strong> Aplicable a la mayoría de autónomos y profesionales en el sistema
+        ordinario
+      </li>
+      <li>
+        <strong>Retención del 7%:</strong> Aplicable a autónomos que hayan iniciado su actividad en los dos
+        años anteriores (nuevo autónomo con tarifa plana)
+      </li>
+    </ul>
+
+    <h3>¿Cómo funciona una retención?</h3>
+    <p>
+      Ejemplo práctico:
+    </p>
+    <ul>
+      <li>Factura base imponible: 1.000 €</li>
+      <li>IVA (21%): 210 €</li>
+      <li>Total factura: 1.210 €</li>
+      <li>Retención IRPF (15%): 150 € (calculada sobre la base, no sobre el total)</li>
+      <li><strong>Importe neto a cobrar: 1.210 - 150 = 1.060 €</strong></li>
+    </ul>
+
+    <h3>¿Sobre qué se calcula la retención?</h3>
+    <p>
+      <strong>Importante:</strong> La retención se calcula sobre la <strong>base imponible</strong> (sin IVA),
+      no sobre el total de la factura. Esto significa que:
+    </p>
+    <ul>
+      <li>Retención = Base imponible × Tipo de retención</li>
+      <li>El IVA no se reduce por la retención</li>
+      <li>La retención es un anticipo de tu IRPF</li>
+    </ul>
+
+    <h3>Tratamiento fiscal de las retenciones</h3>
+    <p>
+      Aunque el cliente te retiene dinero, esto <strong>no significa que sea un gasto tuyo</strong>. Es un
+      anticipo de tu impuesto sobre la renta:
+    </p>
+    <ul>
+      <li>La retención se considera un ingreso (debes declararlo como tal)</li>
+      <li>Se descuenta del IRPF que calcules en tu declaración anual</li>
+      <li>Si las retenciones superan el IRPF que debes pagar, recibes devolución</li>
+    </ul>
+
+    <h3>Documentación de retenciones</h3>
+    <p>
+      Cuando recibes una retención en tu factura, debes:
+    </p>
+    <ul>
+      <li>
+        <strong>Registrarla en tu factura:</strong> Especificar claramente el importe retenido
+      </li>
+      <li>
+        <strong>Conservar comprobante:</strong> Guardar la factura original como comprobante de la retención
+      </li>
+      <li>
+        <strong>Incluirla en tu contabilidad:</strong> Registrar tanto el ingreso como la retención
+      </li>
+      <li>
+        <strong>Declararla en la renta:</strong> En tu declaración del modelo 100, aparecerá en el apartado de
+        retenciones practicadas
+      </li>
+    </ul>
+
+    <h3>Retenciones a fin de año</h3>
+    <p>
+      Los clientes que practican retenciones tienen la obligación de entregarte antes de febrero del año
+      siguiente un documento llamado <strong>modelo 145</strong> o certificado de retenciones. En este
+      documento aparecen:
+    </p>
+    <ul>
+      <li>Número de facturas procesadas</li>
+      <li>Base total de las retenciones</li>
+      <li>Importe total de retenciones practicadas</li>
+      <li>Período del que informan</li>
+    </ul>
+
+    <h3>Ventajas y desventajas de las retenciones</h3>
+    <p>
+      <strong>Desventajas:</strong>
+    </p>
+    <ul>
+      <li>Reduces tu flujo de caja (cobras menos dinero inmediatamente)</li>
+      <li>Complica la tesorería de tu negocio</li>
+      <li>Requiere un seguimiento administrativo adicional</li>
+    </ul>
+    <p>
+      <strong>Ventajas:</strong>
+    </p>
+    <ul>
+      <li>El dinero retenido va directamente a Hacienda (anticipo de impuestos)</li>
+      <li>Si al final del año resulta que tienes derecho a devolución, la recibirás</li>
+      <li>Reduce el riesgo de no poder pagar tu IRPF</li>
+    </ul>
+
+    <h3>Diferencia: Retención del 7% vs 15%</h3>
+    <p>
+      Si acabas de iniciar tu actividad y estás en régimen de tarifa plana como nuevo autónomo, puedes
+      solicitar que te apliquen la retención reducida del 7% en lugar del 15%. Esto requiere que notifiques
+      a tus clientes tu condición de nuevo autónomo.
+    </p>
+
+    <h3>Cálculo en declaración de la renta</h3>
+    <p>
+      En tu declaración de la renta (modelo 100):
+    </p>
+    <ul>
+      <li>Declararás todos tus ingresos (con y sin retención)</li>
+      <li>Calcularás tu IRPF según los tramos aplicables</li>
+      <li>Restarás todas las retenciones practicadas durante el año</li>
+      <li>El resultado será lo que debes pagar o lo que te deben devolver</li>
+    </ul>
+
+    <h3>Errores frecuentes con retenciones</h3>
+    <p>
+      <strong>No registrar la retención en la factura:</strong> Debes especificar claramente en tu factura
+      que se ha practicado una retención y de cuánto.
+    </p>
+    <p>
+      <strong>Confundir retención con descuento:</strong> La retención no es un descuento de precio, es un
+      anticipo de impuestos. Por eso se calcula sobre la base antes de IVA.
+    </p>
+    <p>
+      <strong>Olvidar incluir las retenciones en la declaración:</strong> Todas las retenciones practicadas
+      deben aparecer en tu declaración de la renta.
+    </p>
+    <p>
+      <strong>No solicitar la retención reducida si aplica:</strong> Si eres nuevo autónomo, asegúrate de que
+      te apliquen el 7% en lugar del 15%.
+    </p>
+
+    <h3>Consejo profesional</h3>
+    <p>
+      Si trabajas con clientes que practican retenciones (especialmente administraciones públicas), es
+      importante que lleves una gestión contable meticulosa. Registra todas las retenciones para poder
+      reclamarlas en tu declaración. Considera también el impacto en tu tesorería: si parte de tus ingresos
+      son retenidos, planifica tu cash flow considerando que cobrarás un importe menor al indicado en la
+      factura.
+    </p>
+  </section>
+</ToolLayout>

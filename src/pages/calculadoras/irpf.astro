@@ -1,0 +1,131 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import CalculadoraIRPF from '../../components/interactive/CalculadoraIRPF';
+import type { BreadcrumbItem } from '../../lib/schema';
+
+const title = 'Calculadora IRPF para autónomos 2026';
+const description = 'Calcula tu impuesto sobre la renta (IRPF) según los tramos fiscales 2026. Incluye desglose por tramo e impuesto efectivo.';
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Calculadoras', url: '/calculadoras' },
+  { name: 'IRPF', url: '/calculadoras/irpf' },
+];
+---
+
+<ToolLayout title={title} description={description} breadcrumbs={breadcrumbs}>
+  <slot name="tool">
+    <CalculadoraIRPF client:visible />
+  </slot>
+
+  <section>
+    <h2>¿Qué es el IRPF para autónomos?</h2>
+    <p>
+      El Impuesto sobre la Renta de las Personas Físicas (IRPF) es un impuesto directo que grava los ingresos
+      que obtienes como autónomo en España. Es uno de los principales impuestos que debes pagar anualmente,
+      junto con el IVA y las cotizaciones a la Seguridad Social.
+    </p>
+
+    <h3>Tramos fiscales IRPF 2026</h3>
+    <p>
+      El IRPF se calcula de forma progresiva, es decir, se aplican diferentes tasas según los tramos de renta.
+      A mayor rendimiento, mayor es el tipo impositivo aplicable a la renta adicional. Los tramos para 2026 son
+      los siguientes:
+    </p>
+    <ul>
+      <li>0 € a 12.450 € → 19%</li>
+      <li>12.450 € a 20.200 € → 24%</li>
+      <li>20.200 € a 35.200 € → 30%</li>
+      <li>35.200 € a 60.000 € → 37%</li>
+      <li>60.000 € a 300.000 € → 45%</li>
+      <li>Más de 300.000 € → 47%</li>
+    </ul>
+    <p>
+      <strong>Nota:</strong> Estos son los tipos estatales. Las comunidades autónomas pueden aplicar recargos
+      adicionales que varían según la región donde trabajes.
+    </p>
+
+    <h3>¿Cómo calcular tu IRPF?</h3>
+    <p>
+      Para calcular tu IRPF, necesitas conocer tu rendimiento neto anual. Este se obtiene restando todos tus
+      gastos deducibles de tus ingresos brutos:
+    </p>
+    <ul>
+      <li>Ingresos por servicios/productos</li>
+      <li>Menos: Gastos profesionales (alquiler, suministros, software, etc.)</li>
+      <li>Menos: Amortización de bienes (ordenador, mobiliario, etc.)</li>
+      <li>Menos: Retenciones practicadas (si aplica)</li>
+      <li><strong>Igual: Rendimiento neto</strong></li>
+    </ul>
+
+    <h3>¿Cuándo pagamos IRPF?</h3>
+    <p>
+      Como autónomo, tienes que efectuar pagos fraccionados trimestrales mediante el modelo 130 de la Agencia
+      Tributaria (marzo, junio, septiembre y diciembre). El cálculo es aproximadamente el 3% de tu rendimiento
+      neto estimado en cada trimestre. Luego, en la declaración de la renta (junio del año siguiente), se
+      regulariza el total pagado versus el impuesto definitivo.
+    </p>
+
+    <h3>Ejemplo práctico de cálculo IRPF</h3>
+    <p>
+      Imaginemos que tienes un rendimiento neto anual de 40.000 €. El cálculo sería:
+    </p>
+    <ul>
+      <li>Primeros 12.450 € al 19% = 2.365,50 €</li>
+      <li>Siguientes 7.750 € al 24% = 1.860 €</li>
+      <li>Siguientes 15.000 € al 30% = 4.500 €</li>
+      <li>Últimos 4.800 € al 37% = 1.776 €</li>
+      <li><strong>Total IRPF = 10.501,50 €</strong></li>
+      <li>Tipo medio efectivo = 10.501,50 / 40.000 = 26,25%</li>
+    </ul>
+
+    <h3>Deducciones y gastos deducibles</h3>
+    <p>
+      Como autónomo, puedes deducir de tus ingresos todos los gastos necesarios para realizar tu actividad:
+    </p>
+    <ul>
+      <li><strong>Alquiler:</strong> De oficina, local o parte de la vivienda (si tienes un espacio dedicado)</li>
+      <li><strong>Suministros:</strong> Electricidad, internet, teléfono, agua</li>
+      <li><strong>Software y herramientas:</strong> Programas, suscripciones, aplicaciones profesionales</li>
+      <li><strong>Equipo informático:</strong> Ordenador, impresora, mobiliario (amortizable)</li>
+      <li><strong>Formación:</strong> Cursos y libros profesionales</li>
+      <li><strong>Publicidad y marketing:</strong> Web, publicidad en redes, materiales promocionales</li>
+      <li><strong>Asesoramiento profesional:</strong> Gestoría, abogado, consultor</li>
+      <li><strong>Viajes y transportes:</strong> Desplazamientos profesionales, gasolina, peajes</li>
+      <li><strong>Seguros:</strong> Responsabilidad civil, accidentes, equipamiento</li>
+    </ul>
+
+    <h3>Retenciones practicadas</h3>
+    <p>
+      Si algunos de tus clientes te retienen IRPF en las facturas (típicamente administraciones públicas), esta
+      retención se descuenta de tu impuesto a pagar. Es importante que:
+    </p>
+    <ul>
+      <li>Registres todas las retenciones que recibes</li>
+      <li>Las incluyas en tu declaración de la renta</li>
+      <li>Las recopiles en el modelo 190 que te entregan tus clientes</li>
+    </ul>
+
+    <h3>Diferencia: Ingresos brutos vs. rendimiento neto</h3>
+    <p>
+      Es fundamental entender que el IRPF se calcula sobre el <strong>rendimiento neto</strong>, no sobre los
+      ingresos brutos. Por ejemplo, si facturas 50.000 € pero gastas 10.000 € en tu actividad, tu rendimiento
+      neto es 40.000 €. El IRPF se aplica a esos 40.000 €, no a los 50.000 €. Esta es la importancia de
+      mantener una buena contabilidad y documentar todos tus gastos.
+    </p>
+
+    <h3>Planificación fiscal y consejo profesional</h3>
+    <p>
+      Conocer tu IRPF estimado te ayuda a:
+    </p>
+    <ul>
+      <li>Presupuestar tus ingresos reales después de impuestos</li>
+      <li>Anticipar los pagos fraccionados trimestrales</li>
+      <li>Identificar si necesitas hacer pagos a cuenta mayores</li>
+      <li>Evaluar estrategias de optimización fiscal (dentro de la legalidad)</li>
+    </ul>
+    <p>
+      Sin embargo, cada situación fiscal es única. Te recomendamos que consultes con un asesor profesional
+      para ajustar estos cálculos a tu realidad específica y aprovechar todas las deducciones disponibles.
+    </p>
+  </section>
+</ToolLayout>

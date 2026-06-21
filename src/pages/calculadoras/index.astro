@@ -1,0 +1,131 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import type { BreadcrumbItem } from '../../lib/schema';
+
+const title = 'Calculadoras fiscales para autónomos';
+const description = 'Herramientas interactivas para calcular IRPF, IVA, cuota de autónomos y retenciones. Estimaciones rápidas y precisas.';
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Calculadoras', url: '/calculadoras' },
+];
+
+const calculators = [
+  {
+    title: 'Calculadora IRPF',
+    description: 'Calcula el impuesto sobre la renta y el tipo medio efectivo',
+    href: '/calculadoras/irpf',
+    icon: '📊',
+  },
+  {
+    title: 'Calculadora IVA',
+    description: 'Computa el IVA a liquidar o desde una base imponible',
+    href: '/calculadoras/iva',
+    icon: '💰',
+  },
+  {
+    title: 'Calculadora Cuota SS',
+    description: 'Estima la cuota mensual de la Seguridad Social',
+    href: '/calculadoras/cuota-autonomos',
+    icon: '🛡️',
+  },
+  {
+    title: 'Calculadora Retenciones',
+    description: 'Calcula la retención IRPF en facturas de clientes',
+    href: '/calculadoras/retenciones',
+    icon: '📝',
+  },
+];
+---
+
+<ToolLayout title={title} description={description} breadcrumbs={breadcrumbs}>
+  <slot name="tool">
+    <div class="grid gap-6 md:grid-cols-2">
+      {
+        calculators.map((calc) => (
+          <a
+            href={calc.href}
+            class="group rounded-lg border border-line bg-white p-6 hover:border-brand hover:shadow-lg transition-all"
+          >
+            <div class="text-3xl mb-3">{calc.icon}</div>
+            <h3 class="text-lg font-bold text-ink mb-2 group-hover:text-brand transition-colors">
+              {calc.title}
+            </h3>
+            <p class="text-sm text-muted mb-4">{calc.description}</p>
+            <span class="inline-flex items-center text-sm font-medium text-brand group-hover:gap-2 transition-all">
+              Acceder
+              <span class="ml-1">→</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </slot>
+
+  <section>
+    <h2>¿Cómo funcionan nuestras calculadoras?</h2>
+    <p>
+      Hemos desarrollado estas herramientas para ayudarte a comprender tu situación fiscal de forma rápida y precisa.
+      Cada calculadora utiliza los datos fiscales oficiales de 2026 para el régimen de autónomos en España.
+    </p>
+
+    <h3>Características principales</h3>
+    <ul>
+      <li><strong>Cálculos en tiempo real:</strong> Los resultados se actualizan mientras escribes.</li>
+      <li><strong>Desglose detallado:</strong> Cada calculadora muestra el cálculo paso a paso.</li>
+      <li><strong>Datos actualizados:</strong> Utilizamos los tramos fiscales y bases de cotización vigentes.</li>
+      <li><strong>Interfaz sencilla:</strong> Diseño intuitivo, sin necesidad de conocimientos técnicos.</li>
+    </ul>
+
+    <h3>Calculadora IRPF</h3>
+    <p>
+      El Impuesto sobre la Renta de las Personas Físicas (IRPF) es el impuesto directo que grava los rendimientos
+      que obtienes como autónomo. Esta calculadora aplica los tramos fiscales progresivos de 2026 para calcular
+      la cuota tributaria exacta según tu rendimiento neto anual. Podrás ver el desglose por cada tramo impositivo
+      y el tipo medio efectivo de gravamen.
+    </p>
+
+    <h3>Calculadora IVA</h3>
+    <p>
+      El Impuesto sobre el Valor Añadido (IVA) es un impuesto indirecto sobre el consumo. Como autónomo, debes
+      cobrar IVA a tus clientes (IVA repercutido) y puedes deducir el IVA que has pagado a tus proveedores (IVA
+      soportado). Esta calculadora te ayuda a determinar cuánto debes ingresar en Hacienda cada trimestre.
+    </p>
+
+    <h3>Calculadora Cuota de Autónomos</h3>
+    <p>
+      La cuota de la Seguridad Social es la aportación mensual obligatoria como autónomo. Varía según tu nivel
+      de rendimiento y existe una tarifa plana reducida para nuevos autónomos durante los primeros dos años de
+      actividad. Esta herramienta calcula tu cuota exacta con base en tu rendimiento neto.
+    </p>
+
+    <h3>Calculadora de Retenciones</h3>
+    <p>
+      Muchos clientes (especialmente administraciones públicas y grandes empresas) retienen un porcentaje del IRPF
+      en tus facturas. Esta retención se descuenta de lo que cobras y se ingresa directamente en Hacienda. La
+      calculadora te muestra cuánto cobrarás realmente después de tener en cuenta el IVA y las retenciones.
+    </p>
+
+    <h3>Importancia del cálculo fiscal en autónomos</h3>
+    <p>
+      Como autónomo, tu gestión fiscal es responsabilidad tuya. Estos cálculos son esenciales para:
+    </p>
+    <ul>
+      <li>Planificar tu tesorería y presupuestación mensual</li>
+      <li>Conocer tu verdadera renta neta después de impuestos</li>
+      <li>Preparar tus declaraciones fiscales (IVA e IRPF)</li>
+      <li>Anticipar tus obligaciones tributarias y cotizaciones sociales</li>
+    </ul>
+
+    <h3>Nota importante sobre precisión</h3>
+    <p>
+      Estas calculadoras proporcionan estimaciones basadas en los datos fiscales oficiales. Sin embargo, cada
+      situación personal puede tener particularidades que no están reflejadas en estas herramientas (deducciones
+      especiales, gastos deducibles, rentas complementarias, etc.). Por eso es recomendable:
+    </p>
+    <ul>
+      <li>Consultar con un asesor o gestoría para validar tus cálculos</li>
+      <li>Revisar tu declaración fiscal anualmente con un profesional</li>
+      <li>Considerar tus gastos profesionales deducibles en tu cálculo real de rendimiento neto</li>
+    </ul>
+  </section>
+</ToolLayout>

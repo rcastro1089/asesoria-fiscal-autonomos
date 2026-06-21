@@ -1,0 +1,171 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import CalculadoraCuota from '../../components/interactive/CalculadoraCuota';
+import type { BreadcrumbItem } from '../../lib/schema';
+
+const title = 'Calculadora Cuota Seguridad Social Autónomos 2026';
+const description = 'Estima tu cuota mensual a la Seguridad Social como autónomo. Incluye tarifa plana para nuevos autónomos.';
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Calculadoras', url: '/calculadoras' },
+  { name: 'Cuota Autónomos', url: '/calculadoras/cuota-autonomos' },
+];
+---
+
+<ToolLayout title={title} description={description} breadcrumbs={breadcrumbs}>
+  <slot name="tool">
+    <CalculadoraCuota client:visible />
+  </slot>
+
+  <section>
+    <h2>¿Qué es la cuota de Seguridad Social para autónomos?</h2>
+    <p>
+      La cuota de Seguridad Social es la aportación obligatoria que debes pagar mensualmente como autónomo
+      para financiar prestaciones sociales como la jubilación, la baja por enfermedad, la incapacidad temporal
+      y otros beneficios sociales. Es una de las principales obligaciones fiscales y contables de un autónomo
+      en España.
+    </p>
+
+    <h3>¿Cuánto se paga de cuota?</h3>
+    <p>
+      La cuota de Seguridad Social varía en función de dos factores principales:
+    </p>
+    <ul>
+      <li><strong>Tu rendimiento neto mensual:</strong> Cuanto mayor sea tu renta, mayor será tu cuota</li>
+      <li><strong>Si eres nuevo autónomo:</strong> Existe una tarifa plana reducida para los primeros dos años</li>
+    </ul>
+
+    <h3>Sistema ordinario de cuota</h3>
+    <p>
+      En el régimen ordinario, la cuota se estructura en tramos de rendimiento neto mensual. La base de
+      cotización se ajusta anualmente, al igual que la cuota resultante. Los tramos de 2026 son:
+    </p>
+    <ul>
+      <li>Menos de 600 € → base 735,18 € → cuota 230 €</li>
+      <li>600 € a 900 € → base 857,88 € → cuota 269 €</li>
+      <li>900 € a 1.200 € → base 950,10 € → cuota 298 €</li>
+      <li>1.200 € a 1.500 € → base 1.030,80 € → cuota 324 €</li>
+      <li>1.500 € a 1.800 € → base 1.112,40 € → cuota 349 €</li>
+      <li>1.800 € a 2.100 € → base 1.195,80 € → cuota 375 €</li>
+      <li>2.100 € a 2.400 € → base 1.279,20 € → cuota 402 €</li>
+      <li>2.400 € a 2.700 € → base 1.363,80 € → cuota 428 €</li>
+      <li>2.700 € a 3.000 € → base 1.448,40 € → cuota 455 €</li>
+      <li>3.000 € a 3.300 € → base 1.533,00 € → cuota 482 €</li>
+      <li>3.300 € a 3.600 € → base 1.618,20 € → cuota 509 €</li>
+      <li>3.600 € a 3.900 € → base 1.703,40 € → cuota 536 €</li>
+      <li>3.900 € a 4.100 € → base 1.789,20 € → cuota 563 €</li>
+      <li>4.100 € a 4.500 € → base 1.875,00 € → cuota 590 €</li>
+      <li>4.500 € a 4.900 € → base 1.960,80 € → cuota 617 €</li>
+      <li>4.900 € a 5.300 € → base 2.046,60 € → cuota 644 €</li>
+      <li>5.300 € a 5.700 € → base 2.133,00 € → cuota 672 €</li>
+      <li>5.700 € a 6.000 € → base 2.219,40 € → cuota 699 €</li>
+      <li>Más de 6.000 € → base 2.305,80 € → cuota 726 €</li>
+    </ul>
+
+    <h3>Tarifa plana para nuevos autónomos</h3>
+    <p>
+      Si eres nuevo autónomo, tienes acceso a una tarifa plana reducida durante los dos primeros años de
+      actividad:
+    </p>
+    <ul>
+      <li>
+        <strong>Primer año:</strong> 80 € mensuales (aproximadamente 960 € anuales)
+      </li>
+      <li>
+        <strong>Segundo año:</strong> 160 € mensuales (aproximadamente 1.920 € anuales)
+      </li>
+    </ul>
+    <p>
+      Esta reducción es automática si te das de alta como autónomo. Después del segundo año, pasarás al
+      sistema ordinario según tu rendimiento neto.
+    </p>
+
+    <h3>¿Cuál es la base de cotización?</h3>
+    <p>
+      La base de cotización es la cantidad sobre la que se aplica el porcentaje de cotización (29,3% para
+      autónomos en 2026). Sin embargo, la Seguridad Social ya calcula directamente la cuota resultante según
+      los tramos de rendimiento neto, por lo que no necesitas hacer este cálculo manualmente.
+    </p>
+
+    <h3>Plazos y forma de pago</h3>
+    <p>
+      <strong>Fecha de pago:</strong> Debes pagar tu cuota de Seguridad Social entre el día 1 y el 20 de cada
+      mes.
+    </p>
+    <p>
+      <strong>Formas de pago:</strong> Puedes pagar a través de:
+    </p>
+    <ul>
+      <li>Domiciliación bancaria (opción más común)</li>
+      <li>Transferencia bancaria</li>
+      <li>Cheque</li>
+      <li>En la sede de la Tesorería de la Seguridad Social</li>
+    </ul>
+
+    <h3>¿Cómo se calcula el rendimiento neto?</h3>
+    <p>
+      Para determinar tu cuota de Seguridad Social, necesitas conocer tu rendimiento neto mensual. Se
+      calcula así:
+    </p>
+    <ul>
+      <li>Ingresos totales del mes</li>
+      <li>Menos: Gastos profesionales deducibles</li>
+      <li>Menos: Amortizaciones de bienes de uso</li>
+      <li><strong>Igual: Rendimiento neto mensual</strong></li>
+    </ul>
+
+    <h3>Modificación de cuota</h3>
+    <p>
+      Si tu rendimiento neto varía significativamente, puedes solicitar un cambio de tramo de cotización:
+    </p>
+    <ul>
+      <li>
+        <strong>Cambio a un tramo superior:</strong> Es obligatorio si tu rendimiento neto supera el límite
+        máximo del tramo en el que estás inscrito
+      </li>
+      <li>
+        <strong>Cambio a un tramo inferior:</strong> Puedes solicitarlo si tu rendimiento neto baja
+        permanentemente
+      </li>
+    </ul>
+
+    <h3>Prestaciones sociales cubiertas por la cuota</h3>
+    <p>
+      Con tu cuota de Seguridad Social, tienes cobertura para:
+    </p>
+    <ul>
+      <li><strong>Jubilación:</strong> Pensión al cumplir la edad legal (67 años en 2026)</li>
+      <li><strong>Incapacidad permanente:</strong> Si pierdes tu capacidad laboral</li>
+      <li><strong>Viudedad y orfandad:</strong> Pensión para familia en caso de fallecimiento</li>
+      <li><strong>Maternidad/Paternidad:</strong> Subsidio por cuidado de hijos</li>
+      <li><strong>Incapacidad temporal:</strong> Baja por enfermedad o accidente</li>
+      <li><strong>Accidentes de trabajo:</strong> Si sufres un accidente en tu actividad profesional</li>
+    </ul>
+
+    <h3>Efectos fiscales de la cuota de autónomos</h3>
+    <p>
+      La cuota de Seguridad Social que pagas como autónomo es <strong>deducible en el cálculo del IRPF</strong>.
+      Es decir, puedes restarla de tus gastos profesionales para reducir tu base imponible del IRPF.
+    </p>
+
+    <h3>Obligaciones contables relacionadas</h3>
+    <p>
+      Como autónomo, debes:
+    </p>
+    <ul>
+      <li>Mantener una contabilidad actualizada de tus ingresos y gastos</li>
+      <li>Conservar toda la documentación de tus operaciones</li>
+      <li>Pagar tu cuota puntualmente (incumplimientos generan recargos e intereses)</li>
+      <li>Comunicar cambios en tu rendimiento si son significativos</li>
+      <li>Presentar la declaración anual de la renta (Modelo 100)</li>
+    </ul>
+
+    <h3>Consejo profesional</h3>
+    <p>
+      La cuota de Seguridad Social es una inversión en tu futuro (jubilación) y en tu protección social actual.
+      Aunque es un gasto importante, proporciona seguridad ante contingencias laborales. Te recomendamos
+      que mantengas una gestión contable rigurosa para conocer exactamente tu rendimiento neto y así estar
+      en el tramo de cuota que realmente corresponde a tu situación.
+    </p>
+  </section>
+</ToolLayout>
