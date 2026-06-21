@@ -1,0 +1,55 @@
+---
+/**
+ * AdInArticle.astro
+ * ----------------------------------------------------------------------------
+ * Unidad publicitaria fluida pensada para intercalarse entre párrafos del
+ * cuerpo de un artículo. Internamente delega en <AdSense /> con
+ * format="fluid".
+ *
+ * Auto-limita la cantidad de anuncios in-article por página a un máximo de 3
+ * mediante la prop `index` (0-indexed): solo se renderiza si `index < 3`.
+ *
+ * El contenedor respeta el ancho de la columna de prosa (max-w-2xl), está
+ * centrado y aporta margen vertical para no romper el ritmo de lectura.
+ */
+import AdSense from './AdSense.astro';
+
+interface Props {
+  /** ID del slot de AdSense. */
+  slotId: string;
+  /**
+   * Posición ordinal del anuncio dentro del artículo (0-indexed).
+   * Solo se renderiza si index < 3 (máximo 3 anuncios in-article por página).
+   */
+  index?: number;
+}
+
+const {
+  slotId,
+  index = 0,
+} = Astro.props;
+
+const shouldRender = index < 3;
+---
+
+{shouldRender && (
+  <div class="ad-in-article" aria-label="Publicidad dentro del artículo">
+    <AdSense slotId={slotId} format="fluid" responsive={true} />
+  </div>
+)}
+
+<style>
+  .ad-in-article {
+    /* Encaja con la columna de prosa y centra horizontalmente. */
+    max-width: 42rem; /* ~ max-w-2xl de Tailwind */
+    margin: 2rem auto;
+    width: 100%;
+  }
+
+  /* En móvil, aprovecha todo el ancho disponible. */
+  @media (max-width: 640px) {
+    .ad-in-article {
+      margin: 1.5rem auto;
+    }
+  }
+</style>

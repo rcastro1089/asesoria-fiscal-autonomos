@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import AdInArticle from '../../components/ads/AdInArticle.astro';
 
 export async function getStaticPaths() {
   const articulos = await getCollection('articulos', ({ data }) => !data.draft);
@@ -20,4 +21,9 @@ const { Content, headings } = await render(articulo);
   rawContent={articulo.body ?? ''}
 >
   <Content />
+
+  {/* Opt-in de anuncios in-article (máx. 3 por página vía prop `index`). */}
+  <AdInArticle slotId="9999999990" index={0} slot="ad-after-intro" />
+  <AdInArticle slotId="9999999991" index={1} slot="ad-mid" />
+  <AdInArticle slotId="9999999992" index={2} slot="ad-before-faq" />
 </ArticleLayout>

@@ -1,0 +1,136 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import CalendarioFiscal from '../components/interactive/CalendarioFiscal';
+import eventos from '../data/calendario-2026.json';
+import type { BreadcrumbItem } from '../lib/schema';
+
+const title = 'Calendario Fiscal Autónomos 2026';
+const description =
+  'Calendario fiscal 2026 para autónomos: fechas límite del IVA, IRPF, retenciones y la campaña de la Renta. Filtra por tipo y añade recordatorios en Google Calendar.';
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Calendario Fiscal 2026', url: '/calendario-fiscal' },
+];
+---
+
+<ToolLayout title={title} description={description} breadcrumbs={breadcrumbs}>
+  <slot name="tool">
+    <CalendarioFiscal client:visible events={eventos as any[]} />
+  </slot>
+
+  <section>
+    <h2>Calendario fiscal 2026 para autónomos</h2>
+    <p>
+      El calendario fiscal es la hoja de ruta que todo autónomo en España debe
+      seguir para cumplir con sus obligaciones tributarias frente a la Agencia
+      Tributaria. Cada año, Hacienda establece una serie de fechas límite para
+      la presentación de declaraciones, liquidaciones y pagos de los principales
+      impuestos: IVA, IRPF, retenciones y la declaración anual de la Renta.
+      Perderse una de estas fechas puede suponer recargos, intereses de demora e
+      incluso sanciones que van del 50 % al 150 % de la deuda, además de
+      complicar la relación con la Administración. Conocer con antelación el
+      calendario fiscal te permite organizarte, planificar la tesorería y
+      evitar sustos.
+    </p>
+
+    <h3>Modelo 303: fechas clave del IVA trimestral</h3>
+    <p>
+      El IVA se autoliquida de forma trimestral mediante el modelo 303. El
+      autónomo debe declarar el IVA repercutido a sus clientes y deducir el IVA
+      soportado en sus gastos profesionales. Las fechas de presentación y pago
+      del IVA en 2026 son:
+    </p>
+    <ul>
+      <li>
+        <strong>1T 2025:</strong> del 1 al 20 de enero de 2026 (junto al
+        resumen anual, modelo 390).
+      </li>
+      <li>
+        <strong>1T 2026:</strong> del 1 al 20 de abril de 2026.
+      </li>
+      <li>
+        <strong>2T 2026:</strong> del 1 al 20 de julio de 2026.
+      </li>
+      <li>
+        <strong>3T 2026:</strong> del 1 al 20 de octubre de 2026.
+      </li>
+    </ul>
+    <p>
+      Recuerda que el periodo hábil para presentar el modelo 303 siempre es
+      <strong> del día 1 al día 20 del mes siguiente al trimestre</strong>. Si
+      el día 20 cae en fin de semana o festivo, el plazo se traslada al
+      siguiente día hábil. Llevar un buen control de facturas emitidas y
+      recibidas es imprescindible para que el cálculo sea exacto.
+    </p>
+
+    <h3>Modelo 130: pago fraccionado del IRPF</h3>
+    <p>
+      Los autónomos en estimación directa deben realizar pagos a cuenta del
+      IRPF a través del modelo 130 en los primeros 20 días de abril, julio,
+      octubre y enero. Cada pago fraccionado supone aproximadamente el 20 % del
+      rendimiento neto del trimestre. Si tu facturación es baja o deduces
+      retenciones suficientes, puedes no estar obligado a presentarlo, pero es
+      importante revisarlo trimestre a trimestre para evitar sorpresas en la
+      campaña de la Renta.
+    </p>
+
+    <h3>Retenciones: modelos 111 y 115</h3>
+    <p>
+      Si tienes trabajadores a tu cargo o contratas profesionales que te
+      repercuten retención, debes presentar el modelo 111 de forma trimestral.
+      El modelo 115, por su parte, recoge las retenciones practicadas sobre los
+      arrendamientos de inmuebles urbanos (por ejemplo, el alquiler de tu local
+      u oficina). Ambos modelos se presentan también entre los días 1 y 20 de
+      enero, abril, julio y octubre. Al cierre del año, además, hay que
+      presentar los resúmenes anuales: modelo 190 (retenciones del IRPF) y
+      modelo 180 (retenciones sobre arrendamientos), ambos antes del 31 de
+      enero del año siguiente.
+    </p>
+
+    <h3>Campaña de la Renta 2025 (primavera de 2026)</h3>
+    <p>
+      La campaña de la Renta es el gran hito fiscal del año. Se inicia a
+      principios de abril de 2026 con la apertura del plazo para solicitar
+      cita previa y presentar la declaración (modelo 100) correspondiente al
+      ejercicio 2025. La fecha límite de presentación suele fijarse en torno
+      al <strong>30 de junio de 2026</strong>. Dentro de este periodo conviene
+      distinguir dos momentos: el plazo para presentación <em>telemática</em>
+      con resultado a ingresar y domiciliación (suele cerrar a finales de
+      junio) y el plazo general, que finaliza a finales de junio. Si la
+      declaración sale a devolver o se ingresa sin domiciliación, también
+      tendrás hasta el último día hábil de junio.
+    </p>
+
+    <h3>Consejos para no perder ninguna fecha límite</h3>
+    <ul>
+      <li>
+        <strong>Vuelca cada vencimiento en tu calendario digital</strong>:
+        usa el botón «Añadir recordatorio» de cada evento para sincronizarlo
+        con Google Calendar y recibir avisos.
+      </li>
+      <li>
+        <strong>Cierra los libros registros a final de cada mes</strong>: así,
+        cuando llegue el día 20, solo tendrás que exportar y presentar.
+      </li>
+      <li>
+        <strong>Reserva en tesorería el 25-30 % de tus ingresos</strong> para
+        cubrir IVA e IRPF trimestrales.
+      </li>
+      <li>
+        <strong>Habilita alertas con 7 días de antelación</strong>: así podrás
+        detectar errores, facturas missing o gastos pendientes de clasificar.
+      </li>
+      <li>
+        <strong>Cuenta con un asesor fiscal</strong>: te ayudará a optimizar
+        las deducciones y a evitar errores que después son caros de corregir.
+      </li>
+    </ul>
+
+    <p>
+      Este calendario recoge las principales obligaciones formales del autónomo
+      para 2026, pero la normativa fiscal cambia con frecuencia y cada caso
+      tiene particularidades. Ante cualquier duda, lo más prudente es consultar
+      con un profesional colegiado o con la propia Agencia Tributaria.
+    </p>
+  </section>
+</ToolLayout>

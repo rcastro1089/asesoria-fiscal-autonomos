@@ -1,0 +1,655 @@
+---
+/**
+ * CookieConsent.astro
+ * ----------------------------------------------------------------------------
+ * Banner de consentimiento de cookies autocontenido (CSS + JS vanilla).
+ *
+ * Comportamiento:
+ *   - Banner fijo abajo con 3 botones: Aceptar todo, Rechazar, Configurar.
+ *   - "Aceptar todo"   → localStorage['cookie-consent'] = 'accepted'.
+ *   - "Rechazar"       → localStorage['cookie-consent'] = 'rejected'.
+ *   - "Configurar"     → abre panel con toggles para Publicidad, Analítica y
+ *                        Funcionalidad. Cada toggle escribe su propia clave en
+ *                        localStorage ('cookie-consent-publicidad', etc.).
+ *   - Al iniciar, si ya hay consentimiento previo, no se muestra el banner.
+ *   - Icono flotante (abajo-izquierda) reabre el panel tras cerrarlo.
+ *   - Emite un CustomEvent 'cookieConsentChanged' en `window` con el detalle
+ *     del consentimiento cada vez que éste cambia.
+ *
+ * El componente NO depende de Tailwind: estilos en un <style> aislado.
+ */
+---
+
+<section
+  id="cookie-consent"
+  class="cc-root"
+  role="region"
+  aria-label="Consentimiento de cookies"
+  aria-live="polite"
+  data-state="hidden"
+>
+  <div class="cc-banner" data-cc-panel="banner">
+    <div class="cc-text">
+      <div class="cc-title-row">
+        <span class="cc-cookie-emoji" aria-hidden="true">🍪</span>
+        <h2 class="cc-title">Tu privacidad es importante</h2>
+      </div>
+      <p class="cc-desc">
+        Usamos cookies propias y de terceros para fines esenciales ( funcionamiento del
+        sitio), analíticos (comprender cómo usas la web) y publicitarios (Google
+        AdSense). Puedes aceptar todas, rechazar las opcionales o configurar tus
+        preferencias. Consulta nuestra
+        <a class="cc-link" href="/politica-cookies">política de cookies</a>.
+      </p>
+    </div>
+
+    <div class="cc-actions">
+      <button type="button" class="cc-btn cc-btn-primary" data-cc-action="accept">
+        Aceptar todo
+      </button>
+      <button type="button" class="cc-btn cc-btn-secondary" data-cc-action="reject">
+        Rechazar
+      </button>
+      <button type="button" class="cc-btn cc-btn-ghost" data-cc-action="configure">
+        Configurar
+      </button>
+    </div>
+  </div>
+
+  {/* Panel de configuración (oculto por defecto) */}
+  <div class="cc-config" data-cc-panel="config" hidden>
+    <div class="cc-config-head">
+      <h3 class="cc-config-title">Configura tus preferencias</h3>
+      <button
+        type="button"
+        class="cc-close"
+        data-cc-action="close-config"
+        aria-label="Cerrar configuración"
+      >
+        &times;
+      </button>
+    </div>
+
+    <ul class="cc-toggle-list">
+      <li class="cc-toggle-item">
+        <div class="cc-toggle-text">
+          <span class="cc-toggle-name">Funcionalidad</span>
+          <span class="cc-toggle-desc">
+            Cookies esenciales para el funcionamiento básico de la web. Siempre activas.
+          </span>
+        </div>
+        <label class="cc-switch">
+          <input
+            type="checkbox"
+            data-cc-toggle="funcionalidad"
+            checked
+            disabled
+          />
+          <span class="cc-slider" aria-hidden="true"></span>
+        </label>
+      </li>
+
+      <li class="cc-toggle-item">
+        <div class="cc-toggle-text">
+          <span class="cc-toggle-name">Analítica</span>
+          <span class="cc-toggle-desc">
+            Medición anónima del tráfico para mejorar el contenido.
+          </span>
+        </div>
+        <label class="cc-switch">
+          <input type="checkbox" data-cc-toggle="analitica" />
+          <span class="cc-slider" aria-hidden="true"></span>
+        </label>
+      </li>
+
+      <li class="cc-toggle-item">
+        <div class="cc-toggle-text">
+          <span class="cc-toggle-name">Publicidad</span>
+          <span class="cc-toggle-desc">
+            Google AdSense y segmentación publicitaria personalizada.
+          </span>
+        </div>
+        <label class="cc-switch">
+          <input type="checkbox" data-cc-toggle="publicidad" />
+          <span class="cc-slider" aria-hidden="true"></span>
+        </label>
+      </li>
+    </ul>
+
+    <div class="cc-config-actions">
+      <button type="button" class="cc-btn cc-btn-primary" data-cc-action="save-config">
+        Guardar preferencias
+      </button>
+      <button type="button" class="cc-btn cc-btn-ghost" data-cc-action="accept-all-from-config">
+        Aceptar todo
+      </button>
+    </div>
+  </div>
+</section>
+
+{/* Icono flotante para reabrir el panel (se inyecta en el body vía JS) */}
+
+<style>
+  .cc-root {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: none;
+    pointer-events: none;
+    font-family: var(--font-sans, "Inter", ui-sans-serif, system-ui, sans-serif);
+    color: #0f172a;
+  }
+
+  .cc-root[data-state="visible"] {
+    display: block;
+  }
+
+  .cc-banner,
+  .cc-config {
+    pointer-events: auto;
+    max-width: 64rem;
+    margin: 0 auto 0.75rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12),
+      0 2px 8px rgba(15, 23, 42, 0.06);
+  }
+
+  .cc-banner {
+    margin: 0 0.75rem 0.75rem;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @media (min-width: 768px) {
+    .cc-banner {
+      margin: 0 auto 0.75rem;
+    }
+  }
+
+  .cc-text {
+    flex: 1 1 22rem;
+    min-width: 0;
+  }
+
+  .cc-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cc-cookie-emoji {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .cc-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .cc-desc {
+    margin: 0.4rem 0 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #475569;
+  }
+
+  .cc-link {
+    color: #1d4ed8;
+    text-decoration: underline;
+  }
+
+  .cc-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .cc-btn {
+    font: inherit;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 0.55rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    transition: background-color 0.15s ease, color 0.15s ease,
+      border-color 0.15s ease, transform 0.05s ease;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .cc-btn:active {
+    transform: translateY(1px);
+  }
+
+  .cc-btn-primary {
+    background: #1d4ed8;
+    color: #ffffff;
+  }
+
+  .cc-btn-primary:hover {
+    background: #1e40af;
+  }
+
+  .cc-btn-secondary {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #cbd5e1;
+  }
+
+  .cc-btn-secondary:hover {
+    background: #f1f5f9;
+  }
+
+  .cc-btn-ghost {
+    background: transparent;
+    color: #1d4ed8;
+    border-color: transparent;
+  }
+
+  .cc-btn-ghost:hover {
+    background: #eff6ff;
+  }
+
+  /* Panel de configuración. */
+  .cc-config {
+    margin: 0 0.75rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .cc-config {
+      margin: 0 auto;
+    }
+  }
+
+  .cc-config-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .cc-config-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .cc-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+  }
+
+  .cc-close:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+  }
+
+  .cc-toggle-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cc-toggle-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .cc-toggle-item:first-child {
+    border-top: none;
+  }
+
+  .cc-toggle-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .cc-toggle-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .cc-toggle-desc {
+    font-size: 0.8rem;
+    color: #475569;
+    line-height: 1.4;
+  }
+
+  /* Toggle switch. */
+  .cc-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .cc-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .cc-slider {
+    position: absolute;
+    inset: 0;
+    background: #cbd5e1;
+    border-radius: 999px;
+    transition: background-color 0.2s ease;
+  }
+
+  .cc-slider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    top: 3px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.25);
+  }
+
+  .cc-switch input:checked + .cc-slider {
+    background: #1d4ed8;
+  }
+
+  .cc-switch input:checked + .cc-slider::before {
+    transform: translateX(20px);
+  }
+
+  .cc-switch input:disabled + .cc-slider {
+    background: #94a3b8;
+    cursor: not-allowed;
+  }
+
+  .cc-config-actions {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+
+  /* Botón flotante para reabrir el panel (se crea dinámicamente). */
+  .cc-fab {
+    position: fixed;
+    left: 1rem;
+    bottom: 1rem;
+    z-index: 9998;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    line-height: 1;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+    transition: background-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .cc-fab:hover {
+    background: #1e40af;
+  }
+
+  .cc-fab:active {
+    transform: scale(0.96);
+  }
+
+  .cc-fab[data-visible="true"] {
+    display: flex;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cc-btn,
+    .cc-slider,
+    .cc-slider::before,
+    .cc-fab {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Lógica del banner — ejecutada una sola vez por página.
+   * No depende de ningún framework y es compatible con SSR estático: el
+   * banner aparece en el DOM desde el build y se gestiona el estado con JS.
+   */
+  (() => {
+    const STORAGE_KEY = "cookie-consent";
+    const TOGGLE_KEYS = {
+      funcionalidad: "cookie-consent-funcionalidad",
+      analitica: "cookie-consent-analitica",
+      publicidad: "cookie-consent-publicidad",
+    };
+
+    const root = document.getElementById("cookie-consent");
+    if (!root) return;
+
+    const bannerPanel = root.querySelector<HTMLElement>('[data-cc-panel="banner"]');
+    const configPanel = root.querySelector<HTMLElement>('[data-cc-panel="config"]');
+
+    /** Lee el consentimiento global + detalle de cada categoría. */
+    function readConsent() {
+      const main = localStorage.getItem(STORAGE_KEY); // 'accepted' | 'rejected' | null
+      return {
+        status: main,
+        funcionalidad: true, // siempre obligatoria
+        analitica: localStorage.getItem(TOGGLE_KEYS.analitica) === "true",
+        publicidad: localStorage.getItem(TOGGLE_KEYS.publicidad) === "true",
+      };
+    }
+
+    /** Emite el evento para que otros componentes (AdSense, GA, etc.) reaccionen. */
+    function emitChange() {
+      const detail = readConsent();
+      window.dispatchEvent(
+        new CustomEvent("cookieConsentChanged", { detail })
+      );
+    }
+
+    /** Muestra el banner principal. */
+    function showBanner() {
+      root.setAttribute("data-state", "visible");
+      if (configPanel) configPanel.hidden = true;
+    }
+
+    /** Oculta todo el widget (banner + configuración). */
+    function hideBanner() {
+      root.setAttribute("data-state", "hidden");
+      if (configPanel) configPanel.hidden = true;
+    }
+
+    /** Abre el panel de configuración granular. */
+    function showConfig() {
+      root.setAttribute("data-state", "visible");
+      if (bannerPanel) bannerPanel.style.display = "none";
+      if (configPanel) {
+        configPanel.hidden = false;
+        // Sincroniza los toggles con el estado actual.
+        syncToggles();
+      }
+    }
+
+    /** Desde la configuración, vuelve al banner principal. */
+    function backToBanner() {
+      if (bannerPanel) bannerPanel.style.display = "";
+      if (configPanel) configPanel.hidden = true;
+    }
+
+    /** Sincroniza el estado de los toggles con localStorage. */
+    function syncToggles() {
+      Object.entries(TOGGLE_KEYS).forEach(([cat, key]) => {
+        const input = root.querySelector<HTMLInputElement>(
+          `[data-cc-toggle="${cat}"]`
+        );
+        if (!input || input.disabled) return;
+        const stored = localStorage.getItem(key);
+        // Si nunca se guardó, queda desactivado salvo 'funcionalidad' (disabled+checked).
+        input.checked = stored === "true";
+      });
+    }
+
+    /** Persiste las preferencias detalladas a partir de los toggles. */
+    function persistToggles() {
+      Object.entries(TOGGLE_KEYS).forEach(([cat, key]) => {
+        const input = root.querySelector<HTMLInputElement>(
+          `[data-cc-toggle="${cat}"]`
+        );
+        if (!input || input.disabled) return;
+        localStorage.setItem(key, String(input.checked));
+      });
+    }
+
+    /** Crea / gestiona el botón flotante que reabre el panel. */
+    function ensureFab() {
+      let fab = document.querySelector<HTMLButtonElement>(".cc-fab");
+      if (!fab) {
+        fab = document.createElement("button");
+        fab.type = "button";
+        fab.className = "cc-fab";
+        fab.setAttribute("aria-label", "Abrir preferencias de cookies");
+        fab.textContent = "🍪";
+        fab.addEventListener("click", () => {
+          if (fab) fab.dataset.visible = "false";
+          showConfig();
+        });
+        document.body.appendChild(fab);
+      }
+      return fab;
+    }
+
+    function showFab() {
+      const fab = ensureFab();
+      fab.dataset.visible = "true";
+    }
+
+    function hideFab() {
+      const fab = document.querySelector<HTMLButtonElement>(".cc-fab");
+      if (fab) fab.dataset.visible = "false";
+    }
+
+    /** Delegación de clics para todos los botones data-cc-action. */
+    root.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement;
+      const btn = target.closest<HTMLButtonElement>("[data-cc-action]");
+      if (!btn) return;
+      const action = btn.dataset.ccAction;
+
+      switch (action) {
+        case "accept":
+        case "accept-all-from-config": {
+          localStorage.setItem(STORAGE_KEY, "accepted");
+          localStorage.setItem(TOGGLE_KEYS.funcionalidad, "true");
+          localStorage.setItem(TOGGLE_KEYS.analitica, "true");
+          localStorage.setItem(TOGGLE_KEYS.publicidad, "true");
+          hideBanner();
+          showFab();
+          emitChange();
+          break;
+        }
+        case "reject": {
+          localStorage.setItem(STORAGE_KEY, "rejected");
+          localStorage.setItem(TOGGLE_KEYS.funcionalidad, "true");
+          localStorage.setItem(TOGGLE_KEYS.analitica, "false");
+          localStorage.setItem(TOGGLE_KEYS.publicidad, "false");
+          hideBanner();
+          showFab();
+          emitChange();
+          break;
+        }
+        case "configure": {
+          showConfig();
+          break;
+        }
+        case "close-config": {
+          // Cerrar sin guardar = volver al banner si no había decisión previa,
+          // u ocultar todo si ya la había.
+          const decided = localStorage.getItem(STORAGE_KEY);
+          if (decided) {
+            hideBanner();
+            showFab();
+          } else {
+            backToBanner();
+          }
+          break;
+        }
+        case "save-config": {
+          persistToggles();
+          // Si el usuario marcó al menos una categoría opcional, consideramos
+          // consentimiento 'accepted'; si rechazó todas, 'rejected'.
+          const c = readConsent();
+          const status = c.analitica || c.publicidad ? "accepted" : "rejected";
+          localStorage.setItem(STORAGE_KEY, status);
+          hideBanner();
+          showFab();
+          emitChange();
+          break;
+        }
+      }
+    });
+
+    /** Inicialización en carga de la página. */
+    function init() {
+      const status = localStorage.getItem(STORAGE_KEY);
+      if (!status) {
+        // Primera visita: muestra el banner.
+        showBanner();
+        hideFab();
+      } else {
+        // Ya hay decisión previa: no mostramos el banner, sí el FAB.
+        hideBanner();
+        showFab();
+      }
+      // Notifica el estado inicial a componentes como AdSense para que carguen
+      // o no los scripts de terceros sin esperar interacción del usuario.
+      emitChange();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init, { once: true });
+    } else {
+      init();
+    }
+
+    // API pública mínima por si otros scripts quieren abrir el panel.
+    (window as any).__ccOpenPreferences = () => showConfig();
+  })();
+</script>

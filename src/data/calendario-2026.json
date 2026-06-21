@@ -1,0 +1,242 @@
+[
+  {
+    "fecha": "2026-01-20",
+    "modelo": "Modelo 111",
+    "descripcion": "Retenciones e ingresos a cuenta del IRPF. Trimestre 4 de 2025.",
+    "periodo": "4T 2025",
+    "tipo": "retenciones",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-01-20",
+    "modelo": "Modelo 115",
+    "descripcion": "Retenciones sobre arrendamientos de inmuebles urbanos. Trimestre 4 de 2025.",
+    "periodo": "4T 2025",
+    "tipo": "retenciones",
+    "obligatorioPara": "arrendadores"
+  },
+  {
+    "fecha": "2026-01-30",
+    "modelo": "Modelo 303",
+    "descripcion": "IVA trimestral. Autoliquidación del 4T 2025.",
+    "periodo": "4T 2025",
+    "tipo": "iva",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-01-30",
+    "modelo": "Modelo 130",
+    "descripcion": "Pago fraccionado del IRPF. 4T 2025.",
+    "periodo": "4T 2025",
+    "tipo": "irpf",
+    "obligatorioPara": "estimacion-directa"
+  },
+  {
+    "fecha": "2026-01-30",
+    "modelo": "Modelo 390",
+    "descripcion": "Declaración-resumen anual del IVA. Ejercicio 2025.",
+    "periodo": "Anual 2025",
+    "tipo": "iva",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-01-31",
+    "modelo": "Modelo 180",
+    "descripcion": "Declaración informativa anual de retenciones sobre arrendamientos.",
+    "periodo": "Anual 2025",
+    "tipo": "retenciones",
+    "obligatorioPara": "arrendadores"
+  },
+  {
+    "fecha": "2026-01-31",
+    "modelo": "Modelo 190",
+    "descripcion": "Declaración informativa anual de retenciones del IRPF.",
+    "periodo": "Anual 2025",
+    "tipo": "retenciones",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-04-20",
+    "modelo": "Modelo 111",
+    "descripcion": "Retenciones e ingresos a cuenta del IRPF. Trimestre 1 de 2026.",
+    "periodo": "1T 2026",
+    "tipo": "retenciones",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-04-20",
+    "modelo": "Modelo 115",
+    "descripcion": "Retenciones sobre arrendamientos. Trimestre 1 de 2026.",
+    "periodo": "1T 2026",
+    "tipo": "retenciones",
+    "obligatorioPara": "arrendadores"
+  },
+  {
+    "fecha": "2026-04-20",
+    "modelo": "Modelo 303",
+    "descripcion": "IVA trimestral. Autoliquidación del 1T 2026.",
+    "periodo": "1T 2026",
+    "tipo": "iva",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-04-20",
+    "modelo": "Modelo 130",
+    "descripcion": "Pago fraccionado del IRPF. 1T 2026.",
+    "periodo": "1T 2026",
+    "tipo": "irpf",
+    "obligatorioPara": "estimacion-directa"
+  },
+  {
+    "fecha": "2026-04-01",
+    "modelo": "Campaña Renta 2025",
+    "descripcion": "Inicio de la campaña de la Renta y Patrimonio 2025. Solicitud de cita previa.",
+    "periodo": "Anual 2025",
+    "tipo": "renta",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-06-30",
+    "modelo": "Modelo 100",
+    "descripcion": "Declaración de la Renta de las Personas Físicas 2025. Fecha límite de presentación.",
+    "periodo": "Anual 2025",
+    "tipo": "renta",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-07-20",
+    "modelo": "Modelo 111",
+    "descripcion": "Retenciones e ingresos a cuenta del IRPF. Trimestre 2 de 2026.",
+    "periodo": "2T 2026",
+    "tipo": "retenciones",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-07-20",
+    "modelo": "Modelo 115",
+    "descripcion": "Retenciones sobre arrendamientos. Trimestre 2 de 2026.",
+    "periodo": "2T 2026",
+    "tipo": "retenciones",
+    "obligatorioPara": "arrendadores"
+  },
+  {
+    "fecha": "2026-07-20",
+    "modelo": "Modelo 303",
+    "descripcion": "IVA trimestral. Autoliquidación del 2T 2026.",
+    "periodo": "2T 2026",
+    "tipo": "iva",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-07-20",
+    "modelo": "Modelo 130",
+    "descripcion": "Pago fraccionado del IRPF. 2T 2026.",
+    "periodo": "2T 2026",
+    "tipo": "irpf",
+    "obligatorioPara": "estimacion-directa"
+  },
+  {
+    "fecha": "2026-07-20",
+    "modelo": "Modelo 349",
+    "descripcion": "Declaración recapitulativa de operaciones intracomunitarias. Trimestre 2 de 2026.",
+    "periodo": "2T 2026",
+    "tipo": "iva",
+    "obligatorioPara": "intracomunitario"
+  },
+  {
+    "fecha": "2026-10-20",
+    "modelo": "Modelo 111",
+    "descripcion": "Retenciones e ingresos a cuenta del IRPF. Trimestre 3 de 2026.",
+    "periodo": "3T 2026",
+    "tipo": "retenciones",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-10-20",
+    "modelo": "Modelo 115",
+    "descripcion": "Retenciones sobre arrendamientos. Trimestre 3 de 2026.",
+    "periodo": "3T 2026",
+    "tipo": "retenciones",
+    "obligatorioPara": "arrendadores"
+  },
+  {
+    "fecha": "2026-10-20",
+    "modelo": "Modelo 303",
+    "descripcion": "IVA trimestral. Autoliquidación del 3T 2026.",
+    "periodo": "3T 2026",
+    "tipo": "iva",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2026-10-20",
+    "modelo": "Modelo 130",
+    "descripcion": "Pago fraccionado del IRPF. 3T 2026.",
+    "periodo": "3T 2026",
+    "tipo": "irpf",
+    "obligatorioPara": "estimacion-directa"
+  },
+  {
+    "fecha": "2026-10-20",
+    "modelo": "Modelo 349",
+    "descripcion": "Declaración recapitulativa de operaciones intracomunitarias. Trimestre 3 de 2026.",
+    "periodo": "3T 2026",
+    "tipo": "iva",
+    "obligatorioPara": "intracomunitario"
+  },
+  {
+    "fecha": "2027-01-20",
+    "modelo": "Modelo 111",
+    "descripcion": "Retenciones e ingresos a cuenta del IRPF. Trimestre 4 de 2026.",
+    "periodo": "4T 2026",
+    "tipo": "retenciones",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2027-01-20",
+    "modelo": "Modelo 115",
+    "descripcion": "Retenciones sobre arrendamientos. Trimestre 4 de 2026.",
+    "periodo": "4T 2026",
+    "tipo": "retenciones",
+    "obligatorioPara": "arrendadores"
+  },
+  {
+    "fecha": "2027-01-30",
+    "modelo": "Modelo 303",
+    "descripcion": "IVA trimestral. Autoliquidación del 4T 2026.",
+    "periodo": "4T 2026",
+    "tipo": "iva",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2027-01-30",
+    "modelo": "Modelo 130",
+    "descripcion": "Pago fraccionado del IRPF. 4T 2026.",
+    "periodo": "4T 2026",
+    "tipo": "irpf",
+    "obligatorioPara": "estimacion-directa"
+  },
+  {
+    "fecha": "2027-01-30",
+    "modelo": "Modelo 390",
+    "descripcion": "Declaración-resumen anual del IVA. Ejercicio 2026.",
+    "periodo": "Anual 2026",
+    "tipo": "iva",
+    "obligatorioPara": "todos"
+  },
+  {
+    "fecha": "2027-01-31",
+    "modelo": "Modelo 180",
+    "descripcion": "Declaración informativa anual de retenciones sobre arrendamientos.",
+    "periodo": "Anual 2026",
+    "tipo": "retenciones",
+    "obligatorioPara": "arrendadores"
+  },
+  {
+    "fecha": "2027-01-31",
+    "modelo": "Modelo 190",
+    "descripcion": "Declaración informativa anual de retenciones del IRPF.",
+    "periodo": "Anual 2026",
+    "tipo": "retenciones",
+    "obligatorioPara": "todos"
+  }
+]

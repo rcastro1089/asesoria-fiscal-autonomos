@@ -1,0 +1,196 @@
+---
+/**
+ * AdSense.astro
+ * ----------------------------------------------------------------------------
+ * Wrapper para un slot publicitario de Google AdSense conscientiente del
+ * consentimiento.
+ *
+ * Comportamiento:
+ *   - Si localStorage['cookie-consent'] !== 'accepted' → se muestra un
+ *     placeholder gris con el texto "Anuncio disponible tras aceptar cookies".
+ *   - En cuanto el consentimiento pasa a 'accepted' (evento
+ *     'cookieConsentChanged' emitido por CookieConsent.astro) se inyecta el
+ *     script `adsbygoogle.js` (una sola vez por página) y se inicializa el
+ *     slot con `(adsbygoogle = window.adsbygoogle || []).push({})`.
+ *
+ * El `data-ad-client` es un placeholder — sustitúyelo por tu publisher ID real
+ * (ca-pub-XXXXXXXXXXXXXXXX) en producción o extráelo a una env var.
+ */
+
+interface Props {
+  /** ID del slot de AdSense (data-ad-slot). */
+  slotId: string;
+  /** Formato del anuncio ('auto', 'fluid', 'horizontal', etc.). */
+  format?: string;
+  /** Si el anuncio es responsive (data-full-width-responsive). */
+  responsive?: boolean;
+}
+
+const {
+  slotId,
+  format = "auto",
+  responsive = true,
+} = Astro.props;
+
+// Sustituir por el publisher ID real en producción.
+const AD_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
+
+const minHeight = responsive ? "90px" : "250px";
+
+// Identificador único y predecible para el contenedor (debe ser estable entre
+// SSR e hidratación; usamos el slotId como sufijo).
+const containerId = `adsbygoogle-${slotId}`;
+---
+
+<div
+  class="adsbygoogle-wrap"
+  style={`min-height:${minHeight};`}
+  aria-label="Publicidad"
+  role="complementary"
+>
+  {/* Contenedor del anuncio real (se rellena vía JS tras consentimiento). */}
+  <ins
+    id={containerId}
+    class="adsbygoogle"
+    style="display:block;width:100%;height:100%;"
+    data-ad-client={AD_CLIENT}
+    data-ad-slot={slotId}
+    data-ad-format={format}
+    data-full-width-responsive={responsive ? "true" : "false"}
+    hidden
+  ></ins>
+
+  {/* Placeholder visible mientras no haya consentimiento. */}
+  <div class="adsbygoogle-placeholder" data-ad-placeholder>
+    <span class="adsbygoogle-placeholder-text">Anuncio disponible tras aceptar cookies</span>
+  </div>
+</div>
+
+<style>
+  .adsbygoogle-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 1rem 0;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .adsbygoogle-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1.25rem 1rem;
+    text-align: center;
+  }
+
+  .adsbygoogle-placeholder-text {
+    font-size: 0.8rem;
+    color: #64748b;
+    letter-spacing: 0.02em;
+  }
+</style>
+
+<script>
+  /**
+   * Carga/Inicializa los anuncios AdSense respetando el consentimiento.
+   * Una sola instancia del script por página; se gestiona desde aquí para no
+   * duplicar lógica en cada slot.
+   */
+  (() => {
+    const AD_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";
+    const SCRIPT_ID = "adsbygoogle-js";
+    const SCRIPT_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${AD_CLIENT}`;
+
+    type ConsentDetail = {
+      status: "accepted" | "rejected" | null;
+      funcionalidad: boolean;
+      analitica: boolean;
+      publicidad: boolean;
+    };
+
+    function getConsent(): ConsentDetail {
+      const status = localStorage.getItem("cookie-consent");
+      return {
+        status: status as ConsentDetail["status"],
+        funcionalidad: true,
+        analitica: localStorage.getItem("cookie-consent-analitica") === "true",
+        publicidad: localStorage.getItem("cookie-consent-publicidad") === "true",
+      };
+    }
+
+    /** Inyecta <script src="adsbygoogle.js"> una sola vez. */
+    function ensureAdScript() {
+      if (document.getElementById(SCRIPT_ID)) return;
+      const s = document.createElement("script");
+      s.id = SCRIPT_ID;
+      s.async = true;
+      s.src = SCRIPT_SRC;
+      s.crossOrigin = "anonymous";
+      document.head.appendChild(s);
+    }
+
+    /** Inicializa TODOS los slots pendientes de la página. */
+    function activateAllSlots() {
+      ensureAdScript();
+      const w = window as any;
+      w.adsbygoogle = w.adsbygoogle || [];
+      document
+        .querySelectorAll<HTMLElement>("ins.adsbygoogle[hidden]")
+        .forEach((node) => {
+          node.hidden = false;
+          const placeholder = node
+            .closest(".adsbygoogle-wrap")
+            ?.querySelector<HTMLElement>("[data-ad-placeholder]");
+          if (placeholder) placeholder.hidden = true;
+          try {
+            w.adsbygoogle.push({});
+          } catch (e) {
+            // AdSense ya registró el slot; seguro ignorar.
+          }
+        });
+    }
+
+    /** Vuelve al estado placeholder (p. ej. si el usuario retira el consentimiento). */
+    function deactivateAllSlots() {
+      document
+        .querySelectorAll<HTMLElement>("ins.adsbygoogle:not([hidden])")
+        .forEach((node) => {
+          node.hidden = true;
+          const placeholder = node
+            .closest(".adsbygoogle-wrap")
+            ?.querySelector<HTMLElement>("[data-ad-placeholder]");
+          if (placeholder) placeholder.hidden = false;
+        });
+    }
+
+    function applyConsent(consent: ConsentDetail) {
+      if (consent.status === "accepted") {
+        activateAllSlots();
+      } else {
+        deactivateAllSlots();
+      }
+    }
+
+    // Estado inicial.
+    if (document.readyState === "loading") {
+      document.addEventListener(
+        "DOMContentLoaded",
+        () => applyConsent(getConsent()),
+        { once: true }
+      );
+    } else {
+      applyConsent(getConsent());
+    }
+
+    // Reaccionar a cambios de consentimiento emitidos por CookieConsent.
+    window.addEventListener("cookieConsentChanged", ((e: CustomEvent) => {
+      applyConsent(e.detail as ConsentDetail);
+    }) as EventListener);
+  })();
+</script>

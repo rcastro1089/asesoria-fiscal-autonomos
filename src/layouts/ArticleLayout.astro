@@ -10,6 +10,7 @@ import FAQ from '../components/content/FAQ.astro';
 import SchemaArticle from '../components/seo/SchemaArticle.astro';
 import SchemaFAQ from '../components/seo/SchemaFAQ.astro';
 import SchemaHowTo from '../components/seo/SchemaHowTo.astro';
+import AdInArticle from '../components/ads/AdInArticle.astro';
 import { readingTimeLabel } from '../lib/reading-time';
 import { absoluteUrl } from '../lib/seo';
 import { site } from '../data/site';
@@ -92,12 +93,24 @@ const readingLabel = readingTimeLabel(rawContent);
         {/* Slot de anuncio (tras intro) — reservado para Fase 5 */}
         <slot name="ad-top" />
 
+        {/* Anuncio in-article — tras el 2º párrafo.
+            Slot nombrado para opt-in: las páginas de artículo rellenan este
+            slot con <AdInArticle index={0} slotId="..." slot="ad-after-intro" />.
+            Respeta el límite global de máx. 3 anuncios in-article por página. */}
+        <slot name="ad-after-intro" />
+
         <div class="prose prose-slate max-w-none prose-headings:scroll-mt-24 prose-a:text-brand">
           <slot />
         </div>
 
         {/* Slot de anuncio (final) — reservado para Fase 5 */}
         <slot name="ad-bottom" />
+
+        {/* Anuncio in-article — mitad del contenido (entre el cuerpo y la FAQ). */}
+        <slot name="ad-mid" />
+
+        {/* Anuncio in-article — justo antes de la sección FAQ. */}
+        <slot name="ad-before-faq" />
 
         {data.faq && <FAQ faq={data.faq} />}
 

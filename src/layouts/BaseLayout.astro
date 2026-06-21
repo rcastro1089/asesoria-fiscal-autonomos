@@ -3,6 +3,7 @@ import '../styles/global.css';
 import BaseHead from '../components/seo/BaseHead.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import CookieConsent from '../components/ads/CookieConsent.astro';
 import type { SeoInput } from '../lib/seo';
 
 interface Props extends SeoInput {}
@@ -35,7 +36,10 @@ interface Props extends SeoInput {}
        * AdSense: el script se carga de forma async y SOLO tras el consentimiento
        * del CMP (Fase 5). Aquí queda el punto de inserción documentado; sin
        * consentimiento no se inyecta ningún script de terceros.
+       * El banner <CookieConsent /> emite 'cookieConsentChanged' y el componente
+       * <AdSense /> decide entonces si cargará adsbygoogle.js.
        */
     }
+    <CookieConsent />
   </body>
 </html>

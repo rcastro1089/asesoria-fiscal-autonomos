@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/layout/Breadcrumbs.astro';
+import type { BreadcrumbItem } from '../../lib/schema';
+import { site } from '../../data/site';
+import glosario from '../../data/glosario.json';
+
+interface TerminoGlosario {
+  termino: string;
+  slug: string;
+  definicion: string;
+  definicionAmpliada: string;
+  categoria: string;
+  relacionados: string[];
+}
+
+const categoriaLabel: Record<string, string> = {
+  impuestos: 'Impuestos',
+  modelos: 'Modelos',
+  cotizacion: 'Cotización',
+  facturacion: 'Facturación',
+  general: 'General',
+};
+
+// --- getStaticPaths: dedupe por slug (Set) y resuelve relacionados ---
+export function getStaticPaths() {
+  // Validación de unicidad de slugs con Set. El JSON incluye un slug
+  // duplicado (modelo-036); conservamos la primera aparición.
+  const seen = new Set<string>();
+  const uniqueTerms: TerminoGlosario[] = [];
+  for (const item of glosario as TerminoGlosario[]) {
+    if (seen.has(item.slug)) continue;
+    seen.add(item.slug);
+    uniqueTerms.push(item);
+  }
+
+  const bySlug = new Map<string, TerminoGlosario>(
+    uniqueTerms.map((t) => [t.slug, t]),
+  );
+
+  return uniqueTerms.map((term) => {
+    const relacionados = (term.relacionados ?? [])
+      .filter((slug) => bySlug.has(slug))
+      .map((slug) => bySlug.get(slug)!);
+    return {
+      params: { slug: term.slug },
+      props: { term, relacionados },
+    };
+  });
+}
+
+type Props = {
+  term: TerminoGlosario;
+  relacionados: TerminoGlosario[];
+};
+const { term, relacionados } = Astro.props;
+
+const title = `${term.termino} - Definición Fiscal | Glosario Autónomos`;
+const description =
+  term.definicion.length > 160
+    ? `${term.definicion.slice(0, 157).trimEnd()}…`
+    : term.definicion;
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Glosario', url: '/glosario' },
+  { name: term.termino, url: `/glosario/${term.slug}` },
+];
+
+// JSON-LD DefinedTerm.
+const termUrl = new URL(`/glosario/${term.slug}`, site.url).href;
+const definedTermSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTerm',
+  name: term.termino,
+  description: term.definicion,
+  url: termUrl,
+  inDefinedTermSet: new URL('/glosario', site.url).href,
+  termCode: term.categoria,
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(definedTermSchema)} is:inline />
+
+  <article class="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 lg:py-14">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="mt-6">
+      <span class="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-dark">
+        {categoriaLabel[term.categoria] ?? term.categoria}
+      </span>
+      <h1 class="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+        {term.termino}
+      </h1>
+      <p class="mt-3 text-lg text-muted">{term.definicion}</p>
+    </header>
+
+    <section class="prose prose-slate mt-8 max-w-none">
+      <p>{term.definicionAmpliada}</p>
+    </section>
+
+    {
+      relacionados.length > 0 && (
+        <aside class="mt-10 rounded-xl border border-line bg-surface p-6">
+          <h2 class="text-lg font-semibold text-ink">Términos relacionados</h2>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {relacionados.map((rel) => (
+              <li>
+                <a
+                  href={`/glosario/${rel.slug}`}
+                  class="inline-flex items-center rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:border-brand hover:bg-brand hover:text-white"
+                >
+                  {rel.termino}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+
+    <nav class="mt-10 border-t border-line pt-6">
+      <a
+        href="/glosario"
+        class="inline-flex items-center gap-2 text-sm font-semibold text-brand transition-colors hover:text-brand-dark"
+      >
+        <span aria-hidden="true">←</span> Volver al glosario
+      </a>
+    </nav>
+
+    <footer class="mt-8 rounded-lg border border-dashed border-line bg-surface/60 p-4 text-sm text-muted">
+      <p>
+        La información de este glosario tiene carácter divulgativo y no
+        constituye asesoramiento fiscal personalizado. Consulta con un asesor
+        colegiado antes de tomar decisiones.
+      </p>
+    </footer>
+  </article>
+</BaseLayout>
